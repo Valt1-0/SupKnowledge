@@ -2,13 +2,13 @@ import React from "react";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
-import logo from "../Assets/img/SupKnowledge2.png"
+import logo from "../Assets/img/SupKnowledge2.png";
 
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
+  { name: "Accueil", href: "", current: true },
+  { name: "Gallerie", href: "Gallerie", current: false },
+  { name: "Projects", href: "TEST", current: false },
+  { name: "Calendar", href: "TEST2", current: false },
 ];
 
 function classNames(...classes) {
@@ -18,7 +18,7 @@ function classNames(...classes) {
 const Navbar = () => {
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-200">
+      <Disclosure as="nav" className="bg-yellow-100 drop-shadow-md">
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -26,7 +26,7 @@ const Navbar = () => {
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                    <span className="sr-only">Open main menu</span>
+                    <span className="sr-only">Menu</span>
                     {open ? (
                       <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                     ) : (
@@ -37,25 +37,31 @@ const Navbar = () => {
 
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
-                    <img
-                      className="block h-14 w-auto lg:hidden"
-                      src={logo}
-                      alt="Your Company"
-                    />
-                    <img
-                      className="hidden h-8 w-auto lg:block"
-                      src={logo}
-                      alt="Your Company"
-                    />
-                    <span className="ml-4">
-                      <strong>SupKnowledge</strong>
-                    </span>
+                    <a href="#">
+                      <img
+                        className="block h-8 w-auto lg:hidden"
+                        src={logo}
+                        alt="Your Company"
+                      />
+                    </a>
+                    <a href="#">
+                      <img
+                        className="hidden h-8 w-auto lg:block"
+                        src={logo}
+                        alt="Your Company"
+                      />
+                    </a>
+                    <a href="#">
+                      <span className="ml-4 text-gray-900 font-righteous">
+                        <strong>SupKnowledge</strong>
+                      </span>
+                    </a>
                   </div>
 
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
                       {/* Start - Search Bar */}
-                      <div className="bg-white rounded flex items-center min-w-max p-1 shadow-sm border border-gray-200">
+                      <div className="bg-white rounded flex items-center w-2/3 p-1 shadow-sm border border-gray-200">
                         <button className="outline-none focus:outline-none">
                           <svg
                             className=" w-5 text-gray-600 h-5 cursor-pointer"
@@ -72,11 +78,10 @@ const Navbar = () => {
                         <input
                           type="search"
                           placeholder="Search ..."
-                          
-                          className="w-full pl-4 text-sm outline-none text-gray-600 focus:outline-none bg-transparent"
+                          className="w-auto pl-4 text-sm outline-none text-gray-600 focus:outline-none bg-transparent"
                         />
-                        <div className="select">
-                          {/* <select
+                        {/* <div>
+                          <select
                             x-model="image_type"
                             class="text-sm outline-none focus:outline-none bg-transparent"
                           >
@@ -86,8 +91,8 @@ const Navbar = () => {
                             <option value="photo">Photo</option>
                             <option value="illustration">Illustration</option>
                             <option value="vector">Vector</option>
-                          </select> */}
-                        </div>
+                          </select>
+                        </div> */}
                       </div>
                       {/* End - Search Bar */}
 
@@ -98,8 +103,8 @@ const Navbar = () => {
                           className={classNames(
                             item.current
                               ? "bg-gray-700 text-white"
-                              : "text-gray-300 hover:bg-gray-500 hover:text-white",
-                            "px-3 py-2 rounded-md text-sm font-medium"
+                              : "text-gray-900 hover:bg-gray-500 hover:text-white",
+                            "px-3 py-2 rounded-md text-sm font-medium "
                           )}
                           aria-current={item.current ? "page" : undefined}
                         >
@@ -122,7 +127,7 @@ const Navbar = () => {
                     className={classNames(
                       item.current
                         ? "bg-gray-700 text-white"
-                        : "text-gray-300 hover:bg-gray-500 hover:text-white",
+                        : "text-gray-900 hover:bg-gray-500 hover:text-white",
                       "block px-3 py-2 rounded-md text-base font-medium"
                     )}
                     aria-current={item.current ? "page" : undefined}
