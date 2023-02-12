@@ -12,6 +12,8 @@ const Home = () => {
     const state = useContext(DatasContext)
     const [search, setSearch] = useState(`""`);
     const [isLoading,setIsLoading] = useState(true);
+    const [sliceStart, setSliceStart] = useState(0);
+    const [sliceEnd, setSliceEnd] = useState(10);
     const setKeywordDebounced = keyword => {
         clearTimeout(timeoutToken);
         var token = setTimeout(() => setKeywordAction(keyword), 400);
@@ -31,7 +33,20 @@ const Home = () => {
         state.fetchArts({displayCarousel: true}); // setting random arts to be shown
     }, [search]);
 
+    useEffect( () => {
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    },[])
 
+    const handleScroll = () => {
+        const targetDiv = document.querySelector("#Cards-elements");
+        const targetDivRect = targetDiv.getBoundingClientRect();
+        if (targetDivRect.bottom <= window.innerHeight) {
+            setSliceEnd(sliceEnd + 10);
+            console.log(sliceEnd)
+          //  state.fetchArts({ displayCarousel: false });
+        }
+    };
 
     return (
         <>
@@ -49,24 +64,13 @@ const Home = () => {
                         <Carousel items={state.CarouselToRender} />
                         <hr />
                         {/* flex justify-center flex-wrap items-center  */}
-                        <div className="flex justify-center flex-wrap items-center " > 
+                        <div id="Cards-elements" className="flex justify-center flex-wrap items-center " > 
                             {state.artsToRender.map((art, index) => (<Cards key={index} art={art} />))}{" "}
 
                         </div>
                     </>
 
-
-
-
-
-
-
-
-
-
             }
-
-
 
 
         </>
