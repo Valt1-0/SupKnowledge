@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Paging from "../Components/Paging";
 import Footer from "../Components/Footer";
 import Carousel from "./Carousel"
+import Error404 from "./404";
 
 class App extends Component {
   render() {
@@ -12,7 +13,7 @@ class App extends Component {
           <Navbar />
           <div className="flex-grow">
             <div>
-              <Carousel/>
+              <Error404/>
             </div>
           </div>
           <Footer />

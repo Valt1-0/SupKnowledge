@@ -18,7 +18,7 @@ function classNames(...classes) {
 const Navbar = () => {
   return (
     <>
-      <Disclosure as="nav" className="bg-yellow-100 drop-shadow-md">
+      <Disclosure as="nav" className=" bg-slate-100 drop-shadow-md">
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -57,7 +57,6 @@ const Navbar = () => {
                       </span>
                     </a>
                   </div>
-
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
                       {/* Start - Search Bar */}
@@ -80,10 +79,10 @@ const Navbar = () => {
                           placeholder="Search ..."
                           className="w-auto pl-4 text-sm outline-none text-gray-600 focus:outline-none bg-transparent"
                         />
-                        {/* <div>
+                        <div>
                           <select
                             x-model="image_type"
-                            class="text-sm outline-none focus:outline-none bg-transparent"
+                            className ="text-sm outline-none focus:outline-none bg-transparent"
                           >
                             <option value="all" selected>
                               All
@@ -92,7 +91,7 @@ const Navbar = () => {
                             <option value="illustration">Illustration</option>
                             <option value="vector">Vector</option>
                           </select>
-                        </div> */}
+                        </div>
                       </div>
                       {/* End - Search Bar */}
 

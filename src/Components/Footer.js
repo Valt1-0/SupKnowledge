@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <footer className="relative mt-16 bg-yellow-100 mb-auto">
+    <footer className="relative mt-16 bg-slate-100 mb-auto">
       <svg
-        className="absolute top-0 w-full h-6 -mt-5 sm:-mt-10 sm:h-16 text-yellow-100"
+        className="absolute top-0 w-full h-6 -mt-5 sm:-mt-10 sm:h-16 text-slate-100"
         preserveAspectRatio="none"
         viewBox="0 0 1440 54"
       >
@@ -21,7 +21,7 @@ const Footer = () => {
               className="inline-flex items-center"
             >
               <svg
-                className="w-8 text-yellow-400"
+                className="w-8 text-slate-500"
                 viewBox="0 0 24 24"
                 strokeLinejoin="round"
                 strokeWidth="2"
@@ -35,7 +35,7 @@ const Footer = () => {
                 <rect x="14" y="1" width="7" height="6" />
                 <rect x="14" y="11" width="7" height="12" />
               </svg>
-              <span className="ml-2 text-xl text-black font-righteous font-bold tracking-wide text-gray-100 uppercase">
+              <span className="ml-2 text-xl text-black font-righteous font-bold tracking-wide uppercase">
                 SupKnowledge
               </span>
             </a>
@@ -48,69 +48,6 @@ const Footer = () => {
                 Eaque ipsa quae ab illo inventore veritatis et quasi architecto
                 beatae vitae dicta sunt explicabo.
               </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-5 row-gap-8 lg:col-span-4 md:grid-cols-4">
-            <div>
-              <p className="font-semibold tracking-wide text-teal-accent-400">
-                Category
-              </p>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <a
-                    href="/"
-                    className="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400"
-                  >
-                    News
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-semibold tracking-wide text-teal-accent-400">
-                Cherry
-              </p>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <a
-                    href="/"
-                    className="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400"
-                  >
-                    Web
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-semibold tracking-wide text-teal-accent-400">
-                Apples
-              </p>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <a
-                    href="/"
-                    className="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400"
-                  >
-                    Media
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-semibold tracking-wide text-teal-accent-400">
-                Business
-              </p>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <a
-                    href="/"
-                    className="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400"
-                  >
-                    Infopreneur
-                  </a>
-                </li>
-
-              </ul>
             </div>
           </div>
         </div>

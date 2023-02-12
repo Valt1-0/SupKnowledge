@@ -1,5 +1,4 @@
 import React from "react";
-import anime from "animejs";
 
 const Carousel = () => {
 
@@ -19,12 +18,5 @@ const Carousel = () => {
   );
 };
 
-
-// const elements = document.querySelectorAll('.carousel');
-
-// anime({
-//   targets: "div",
-//   translateX: 5
-// });
 
 export default Carousel;
