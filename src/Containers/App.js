@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./Navbar";
 import Paging from "../Components/Paging";
 import Footer from "../Components/Footer";
-import Carousel from "./Carousel"
 import Error404 from "./404";
+import Home from "../Pages/Cards/Home/Home";
+import DatasContextProvider from "../Contexts/DatasContext";
 
 class App extends Component {
   render() {
@@ -13,7 +15,14 @@ class App extends Component {
           <Navbar />
           <div className="flex-grow">
             <div>
-              <Error404/>
+              <Router>
+                <DatasContextProvider>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="*" element={<Error404 />} />    
+                  </Routes>
+                </DatasContextProvider>
+              </Router>
             </div>
           </div>
           <Footer />
