@@ -1,8 +1,7 @@
-import { useEffect, useState, useContext, Component } from "react";
+import { useEffect, useState, useContext } from "react";
 import Cards from "../../../Components/Cards";
 import Carousel from "../../../Components/Carousel/Carousel";
 import { DatasContext } from "../../../Contexts/DatasContext";
-import SingleCards from "../SingleCards";
 
 
 
@@ -11,8 +10,8 @@ const Home = () => {
     const [timeoutToken, setTimeoutToken] = useState(null);
     const state = useContext(DatasContext)
     const [search, setSearch] = useState(`""`);
-    const [isLoading,setIsLoading] = useState(true);
-    const [sliceStart, setSliceStart] = useState(0);
+    // const [isLoading,setIsLoading] = useState(true);
+    // const [sliceStart, setSliceStart] = useState(0);
     const [sliceEnd, setSliceEnd] = useState(10);
     const setKeywordDebounced = keyword => {
         clearTimeout(timeoutToken);

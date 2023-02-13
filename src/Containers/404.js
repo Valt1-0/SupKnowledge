@@ -56,7 +56,7 @@ const Error404 = () => {
         </motion.span>
       </div>
       <div className="flex justify-center items-center mt-5">
-        {/* <Link to="/"> */}
+        <Link to="/">
         <motion.button
           className="bg-slate-200 rounded hover:bg-slate-400 text-black hover:text-white font-bold py-2 px-4"
           whileHover={{ scale: 1.1 }}
@@ -73,7 +73,7 @@ const Error404 = () => {
         >
           Back to the Menu
         </motion.button>
-        {/* </Link> */}
+        </Link>
       </div>
     </>
   );
