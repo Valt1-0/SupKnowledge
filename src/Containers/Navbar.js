@@ -37,21 +37,21 @@ const Navbar = () => {
 
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
-                    <a href="#">
+                    <a href="/">
                       <img
                         className="block h-8 w-auto lg:hidden"
                         src={logo}
                         alt="Your Company"
                       />
                     </a>
-                    <a href="#">
+                    <a href="/">
                       <img
                         className="hidden h-8 w-auto lg:block"
                         src={logo}
                         alt="Your Company"
                       />
                     </a>
-                    <a href="#">
+                    <a href="/">
                       <span className="ml-4 text-gray-900 font-righteous">
                         <strong>SupKnowledge</strong>
                       </span>
