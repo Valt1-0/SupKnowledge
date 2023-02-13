@@ -64,8 +64,8 @@ export const Carousel = props => {
 
     return (
         <>
-            <div className={getClassName("")} ref={ref}>
-                <div className={getClassName("__container")} style={getItemStyle()}>
+            <div className="relative w-52 h-52 m-auto [perspective:62.5rem]" ref={ref}>
+                <div className="absolute w-full h-full" style={getItemStyle()}>
                     {props.items.map((item, index) => (
                         <div
                             className={getClassName("__slide")}

@@ -1,11 +1,3 @@
-.carousel {
-    width: 13.125rem;
-    height: 13.125rem;
-    position: relative;
-    margin: 0 auto;
-    perspective: 62.5rem;
-}
-
 .carousel__container {
     width: 100%;
     height: 100%;
