@@ -2,6 +2,8 @@ import * as React from "react"
 import TouchSweep from "touchsweep"
 import '../Carousel/Carousel.css';
 import noImage from '../../Assets/img/no-image.png';
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline"
+
 
 export const Carousel = props => {
     const itemWidth = props.itemWidth
@@ -64,8 +66,8 @@ export const Carousel = props => {
 
     return (
         <>
-            <div className="relative w-52 h-52 m-auto [perspective:62.5rem]" ref={ref}>
-                <div className="absolute w-full h-full" style={getItemStyle()}>
+            <div className={getClassName("")} ref={ref}>
+                <div className={getClassName("__container")} style={getItemStyle()}>
                     {props.items.map((item, index) => (
                         <div
                             className={getClassName("__slide")}
@@ -95,6 +97,7 @@ export const Carousel = props => {
                         className={getClassName(["__control", "__control--prev"])}
                         onClick={prev}
                     >
+                    <ArrowLeftIcon className="m-auto h-8 w-8 rounded-full"/>
                         {props.prevButtonContent}
                     </button>
 
@@ -102,6 +105,7 @@ export const Carousel = props => {
                         className={getClassName(["__control", "__control--next"])}
                         onClick={next}
                     >
+                    <ArrowRightIcon className="m-auto h-8 w-8 rounded-full"/>
                         {props.nextButtonContent}
                     </button>
                 </div>
