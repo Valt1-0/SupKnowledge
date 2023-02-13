@@ -12,6 +12,8 @@ const Error404 = () => {
     setTimeout(() => setPulsing(false), 600);
   };
 
+  document.title = "SupKnowLedge | 404 Error 😥"
+
   return (
     <>
       <div className="grid place-items-center mt-10">
