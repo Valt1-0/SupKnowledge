@@ -19,7 +19,7 @@ class App extends Component {
                 <DatasContextProvider>
                   <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="*" element={<Error404 />} />    
+                    <Route path="*" element={<Error404 />} />
                   </Routes>
                 </DatasContextProvider>
               </Router>

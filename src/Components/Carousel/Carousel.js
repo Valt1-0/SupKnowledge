@@ -2,6 +2,8 @@ import * as React from "react"
 import TouchSweep from "touchsweep"
 import '../Carousel/Carousel.css';
 import noImage from '../../Assets/img/no-image.png';
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline"
+
 
 export const Carousel = props => {
     const itemWidth = props.itemWidth
@@ -95,6 +97,7 @@ export const Carousel = props => {
                         className={getClassName(["__control", "__control--prev"])}
                         onClick={prev}
                     >
+                    <ArrowLeftIcon className="m-auto h-8 w-8 rounded-full"/>
                         {props.prevButtonContent}
                     </button>
 
@@ -102,6 +105,7 @@ export const Carousel = props => {
                         className={getClassName(["__control", "__control--next"])}
                         onClick={next}
                     >
+                    <ArrowRightIcon className="m-auto h-8 w-8 rounded-full"/>
                         {props.nextButtonContent}
                     </button>
                 </div>
