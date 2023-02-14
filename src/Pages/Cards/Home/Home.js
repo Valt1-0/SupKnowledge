@@ -212,12 +212,15 @@ const Home = () => {
                         <Carousel items={state.CarouselToRender} />
                         <hr />
                         {/* flex justify-center flex-wrap items-center  */}
-                        <div id="Cards-elements" className="flex justify-center flex-wrap items-center " >
+                   <ScrollArrow></ScrollArrow>
+                          <div id="Cards-elements" className="flex justify-center flex-wrap items-center " >
 
-                            {artsToRender.map((art, index) => (<Cards key={index} art={art} />))}{" "}
+                              {artsToRender.map((art, index) => (<Cards key={index} art={art} />))}{" "}
 
 
-                        </div>
+                          </div>
+                      
+                       
 
                         <>
                             {hasMore && loading ?
