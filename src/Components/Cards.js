@@ -5,23 +5,22 @@ import * as S from './styles'
 const Cards = (props) => {
   return (
 
-    <S.CardWrapper>
-      <img src={props.art.primaryImageSmall ? props.art.primaryImageSmall : noImage} alt="" />
-      <S.TextCardWrapper>
+    <div className="relative w-[300] flex flex-col justify-center items-center [transition:0.3s] animate-cards m-8 hover:[transform:scale(1.02)]">
+    <img className="[transition:0.5s] w-[300px] h-[400px] object-cover rounded-2xl [box-shadow:rgba(0,0,0,0.35)_0px_5px_15px] hover:[filter:brightness(20%)]" src={props.art.primaryImageSmall ? props.art.primaryImageSmall : noImage} alt="" />
+      <div className=" text-white hidden max-w-[80] cursor-default hover:absolute hover:w-full hover:h-full hover:flex hover:flex-col hover:items-center hover:text-center">
         <div>
-          <h1>{props.art.title.length > 25 ? props.art.title.slice(0, 25).concat("...") : props.art.title}</h1>
+          <h1 className="mb-2">{props.art.title.length > 25 ? props.art.title.slice(0, 25).concat("...") : props.art.title}</h1>
           <span>{props.art.objectBeginDate} </span>
-          <p>{props.art.artistDisplayName}</p>
+          <p className="italic">{props.art.artistDisplayName}</p>
         </div>
-        <S.ButtonWrapper>
-
-          <S.Button
+        <div className="flex flex-col w-full text-center justify-center items-center">
+          <button className="text-white text-[1px] w-[90%] bg-transparent p-2 border-solid border-white border cursor-pointer rounded-md [transition:0.5s] mt-4 hover:text-black hover:bg-white"
             onClick={() => { window.open(`https://www.metmuseum.org/art/collection/search/${props.art.objectID}`, '_blank') }}
           >Learn more
-          </S.Button>
-        </S.ButtonWrapper>
-      </S.TextCardWrapper>
-    </S.CardWrapper>
+          </button>
+        </div>
+      </div>
+    </div>
 
 
     // <div className="flex justify-center">
