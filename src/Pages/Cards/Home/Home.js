@@ -190,7 +190,10 @@ const Home = () => {
         <p>Loading</p>
       ) : (
         <>
+          <br/>
           <Carousel items={state.CarouselToRender} />
+          <br/>
+          <br/>
           <hr />
           {/* flex justify-center flex-wrap items-center  */}
           <ScrollArrow/>
