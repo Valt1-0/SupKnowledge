@@ -12,16 +12,21 @@ class App extends Component {
     return (
       <>
         <div className="flex flex-col min-h-screen">
-          <Navbar />
+          
           <div className="flex-grow">
             <div>
               <Router>
+
                 <DatasContextProvider>
+                  <Navbar />
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="*" element={<Error404 />} />
                   </Routes>
                 </DatasContextProvider>
+                <Routes>
+                  <Route path="/object"></Route>
+                </Routes>
               </Router>
             </div>
           </div>

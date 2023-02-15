@@ -6,7 +6,7 @@ import ScrollArrow from "../../../Components/ScrollArrow";
 
 
 const Home = () => {
-    const [timeoutToken, setTimeoutToken] = useState(null);
+
     const state = useContext(DatasContext)
     const [search, setSearch] = useState(`""`);
     const [isLoading, setIsLoading] = useState(false);
@@ -18,17 +18,7 @@ const Home = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const setKeywordDebounced = keyword => {
-        clearTimeout(timeoutToken);
-        var token = setTimeout(() => setKeywordAction(keyword), 400);
-        setTimeoutToken(token);
-    };
 
-
-    const setKeywordAction = result => {
-        state.setKeywords(`"${result}"`);
-        setSearch(result);
-    };
 
     const loadData = (async () => {
         console.log("allObjects : ", allObjects)
@@ -97,11 +87,11 @@ const Home = () => {
 
         return;
 
-    }, [search]);
+    }, [state.keywords]);
 
 
     useEffect(() => {
-
+        console.log()
         loadData();
         return;
     }, [allObjects])
@@ -119,7 +109,8 @@ const Home = () => {
             const targetDivRect = targetDiv.getBoundingClientRect();
             console.log(targetDivRect)
             console.log(window.innerHeight)
-            if (targetDivRect.bottom > window.innerHeight) return;
+            console.log(targetDivRect.bottom > window.innerHeight)
+            if (targetDivRect.bottom >= window.innerHeight) return;
             if (allObjects != null) {
                 setLoading(true);
             }
@@ -136,21 +127,24 @@ const Home = () => {
 
     useEffect(() => {
         if (!loading) return;
+        const data = async () => {
+            const timeoutId = setTimeout(async () => {
+                // fetch more data here, then update the data and loading state
+                currentPage.current = currentPage.current + 10;
+                await loadData();
+                setLoading(false);
+            }, 500);
+            return () => clearTimeout(timeoutId);
+        }
 
-        const timeoutId = setTimeout(() => {
-            // fetch more data here, then update the data and loading state
-            currentPage.current = currentPage.current + 10;
-            loadData();
-            setLoading(false);
-        }, 500);
+        data();
 
-        return () => clearTimeout(timeoutId);
     }, [loading]);
 
 
-  return (
-    <>
-      {/* <input
+    return (
+        <>
+            {/* <input
         type="search"
         placeholder="Enter keyword here..."
         onChange={(e) => setKeywordDebounced(e.target.value)}
@@ -158,69 +152,69 @@ const Home = () => {
         aria-label="search term"
       /> */}
 
-      <div className="px-4 sm:px-8 lg:px-16 xl:px-20 mx-auto">
-        <div className="box pt-6">
-          <div className="box-wrapper">
-            <div className=" bg-white rounded flex items-center w-full p-3 shadow-sm border border-gray-200">
-              <button className="outline-none focus:outline-none">
-                <svg
-                  className=" w-5 text-gray-600 h-5 cursor-pointer"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </button>
-              <input
-                type="search"
-                name=""
-                id=""
-                placeholder="Search an Art Work ..."
-                x-model="q"
-                onChange={(e) => setKeywordDebounced(e.target.value)}
-                ref={(input) => input && input.focus()}
-                aria-label="search term"
-                className=" w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
-              />
-              <div class="select">
-                <select
-                  name=""
-                  id=""
-                  x-model="image_type"
-                  className="text-sm outline-none focus:outline-none bg-transparent"
-                >
-                  <option value="all" selected>
-                    All
-                  </option>
-                  <option value="photo">Photo</option>
-                  <option value="illustration">Illustration</option>
-                  <option value="vector">Vector</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            {/* <div className="px-4 sm:px-8 lg:px-16 xl:px-20 mx-auto">
+                <div className="box pt-6">
+                    <div className="box-wrapper">
+                        <div className=" bg-white rounded flex items-center w-full p-3 shadow-sm border border-gray-200">
+                            <button className="outline-none focus:outline-none">
+                                <svg
+                                    className=" w-5 text-gray-600 h-5 cursor-pointer"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </button>
+                            <input
+                                type="search"
+                                name=""
+                                id=""
+                                placeholder="Search an Art Work ..."
+                                x-model="q"
+                                onChange={(e) => setKeywordDebounced(e.target.value)}
+                                ref={(input) => input && input.focus()}
+                                aria-label="search term"
+                                className=" w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
+                            />
+                            <div class="select">
+                                <select
+                                    name=""
+                                    id=""
+                                    x-model="image_type"
+                                    className="text-sm outline-none focus:outline-none bg-transparent"
+                                >
+                                    <option value="all" selected>
+                                        All
+                                    </option>
+                                    <option value="photo">Photo</option>
+                                    <option value="illustration">Illustration</option>
+                                    <option value="vector">Vector</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> */}
 
             {
-                isLoading ? <p>Loading</p> :
+                state.isLoadingDatas ? <p>Loading</p> :
                     <>
                         <Carousel items={state.CarouselToRender} />
                         <hr />
                         {/* flex justify-center flex-wrap items-center  */}
-                   <ScrollArrow></ScrollArrow>
-                          <div id="Cards-elements" className="flex justify-center flex-wrap items-center " >
+                        <ScrollArrow></ScrollArrow>
+                        <div id="Cards-elements" className="flex justify-center flex-wrap items-center " >
 
-                              {artsToRender.map((art, index) => (<Cards key={index} art={art} />))}{" "}
+                            {artsToRender.map((art, index) => (<Cards key={index} art={art} />))}{" "}
 
 
-                          </div>
-                      
-                       
+                        </div>
+
+
 
                         <>
                             {hasMore && loading ?

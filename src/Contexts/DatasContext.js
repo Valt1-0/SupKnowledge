@@ -48,7 +48,7 @@ const DatasContextProvider = (props) => {
                     return false;
             }
         }
-        setIsLoadingDatas(false);
+     //   setIsLoadingDatas(false);
     }
 
     const fetchAllArts = async (search, filter) => {
@@ -89,8 +89,9 @@ const DatasContextProvider = (props) => {
         if (props.displayCarousel == true)
             fetchForCarousel();
 
-        setIsLoadingDatas(false)
+       
      var response = await fetchAllArts(keywords, filter)
+        setIsLoadingDatas(false)
         return response;
 
 
