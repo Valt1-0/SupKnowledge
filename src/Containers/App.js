@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate }  from "react-router-dom";
+
 import Navbar from "./Navbar";
 import Paging from "../Components/Paging";
 import Footer from "../Components/Footer";
@@ -12,24 +13,20 @@ class App extends Component {
     return (
       <>
         <div className="flex flex-col min-h-screen">
-
           <div className="flex-grow">
-            <div>
               <Router>
                 <DatasContextProvider>
                   <Navbar />
                   <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/*" element={<Error404 />} />
+                    <Route path="404" element={<Error404 />} />
+                    <Route path="*" element={<Navigate to="/404" />} />
+                    <Route path="/object" element={<div>OSKOUR</div>}/>
                   </Routes>
+                  <Footer />
                 </DatasContextProvider>
-                <Routes>
-                  <Route path="/object"></Route>
-                </Routes>
               </Router>
-            </div>
           </div>
-          <Footer />
         </div>
       </>
     );
