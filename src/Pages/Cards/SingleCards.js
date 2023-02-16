@@ -1,13 +1,23 @@
 import { useEffect,useContext } from "react";
-import Cards from "../../Components/Cards";
 import { DatasContext } from "../../Contexts/DatasContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
+const SingleCards = (req,res) => {
+    
+const state = useContext(DatasContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const search = location.search;
+    const params = new URLSearchParams(search);
+    const id = params.get('id'); 
 
-const SingleCards = () => {
-const {fetchArts, SingleToRender} = useContext(DatasContext);
+console.log(id);
 
 useEffect(() => {
-    fetchArts();
+    if (!id) {
+        return navigate("/404");
+    }
+    state.fetchSingleArt(1)
 }, []);
 
 
@@ -15,9 +25,7 @@ useEffect(() => {
 return (
     <div>
         <p>console.log("Single");</p>
-        {SingleToRender.map((art,index) => (
-            <Cards/>
-        ))}
+      test
     </div>
 )
 
