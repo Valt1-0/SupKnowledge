@@ -1,4 +1,5 @@
 import React, { useContext,useState } from "react";
+import { useLocation } from 'react-router-dom';
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import {DatasContext} from "../Contexts/DatasContext";
@@ -18,9 +19,12 @@ function classNames(...classes) {
 }
 
 
-const Navbar = () => {
+const Navbar = ({ is404Page }) => {
   const state = useContext(DatasContext)
   const [timeoutToken, setTimeoutToken] = useState(null);
+  const location = useLocation();
+
+ 
 
   const setKeywordDebounced = keyword => {
     clearTimeout(timeoutToken);
@@ -31,7 +35,7 @@ const Navbar = () => {
 
   const setKeywordAction = result => {
     state.setKeywords(`"${result}"`);
-    state.setLoadingDatas(true);
+    state.setIsLoadingDatas(true);
     const test1 =  state.fetchArts({ displayCarousel: true })
   };
 
@@ -84,7 +88,7 @@ const Navbar = () => {
                     </a>
                   </div>
 
-
+                  {!is404Page ? (
                   <div className="px-4 sm:px-8 lg:px-16 xl:px-20 mx-auto">
                     <div className="box pt-6">
                       <div className="box-wrapper">
@@ -132,7 +136,7 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
-
+                  ) : (<div></div>)}
 
 
 

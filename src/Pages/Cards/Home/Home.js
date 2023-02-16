@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, Component } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import Cards from "../../../Components/Cards";
 import Carousel from "../../../Components/Carousel/Carousel";
 import { DatasContext } from "../../../Contexts/DatasContext";
@@ -16,6 +16,7 @@ const Home = () => {
     const [hasMore, setHasMore] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const isMountedRef = useRef(true);
 
 
 
@@ -70,6 +71,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (isMountedRef.current) {
     const data = async () => {
       var res = await state.fetchArts({ displayCarousel: true });
       currentPage.current = 10;
@@ -79,6 +81,10 @@ const Home = () => {
     data();
 
         return;
+  }
+    return () => {
+      isMountedRef.current = false;
+    };
 
     }, [state.keywords]);
 
