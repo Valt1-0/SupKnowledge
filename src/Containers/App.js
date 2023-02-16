@@ -21,6 +21,7 @@ class App extends Component {
                     <Route path="/" element={<Home />} />
                     <Route path="404" element={<Error404 />} />
                     <Route path="*" element={<Navigate to="/404" />} />
+                    <Route path="/art" element={<SingleCards />} /> 
                     <Route path="/object" element={<div>OSKOUR</div>}/>
                   </Routes>
                   <Footer />
