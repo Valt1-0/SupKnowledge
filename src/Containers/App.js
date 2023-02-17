@@ -7,6 +7,7 @@ import Footer from "../Components/Footer";
 import Error404 from "./404";
 import Home from "../Pages/Cards/Home/Home";
 import DatasContextProvider from "../Contexts/DatasContext";
+import SingleCards from "../Pages/Cards/SingleCards";
 
 class App extends Component {
   render() {
