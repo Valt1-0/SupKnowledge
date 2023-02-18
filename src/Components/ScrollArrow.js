@@ -19,9 +19,9 @@ const ScrollArrow = () => {
   window.addEventListener("scroll", checkScrollTop);
 
   return (
-    <div className="bg-red-500">
+    <div className="flex items-center justify-end mr-10">
       <ArrowUpIcon
-        className="fixed w-full h-5 bottom-5 items-center justify-center z-50 cursor-pointer opacity-50"
+        className="fixed bg-slate-200 border border-white border-4 text-opacity-50 rounded-2xl w-12 h-12 bottom-5 z-50 cursor-pointer opacity-75"
         onClick={scrollTop}
         style={{ height: 40, display: showScroll ? "flex" : "none" }}
       />

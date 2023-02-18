@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+// import styled, { keyframes } from "styled-components";
 
 // export const GoUpAnimation = keyframes`
 // from { transform: translateY(10px) }
@@ -56,7 +56,7 @@ import styled, { keyframes } from "styled-components";
 //       filter: brightness(20%);
 //     }
 //   }
-// `;
+//  `;
 
 // export const ButtonWrapper = styled.div`
 //   display: flex;

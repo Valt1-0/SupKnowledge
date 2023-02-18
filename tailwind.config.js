@@ -9,7 +9,7 @@ module.exports = {
       },
 
       animation: {
-        cards: 'cards 0.5s',
+        cards: "cards 0.5s",
       },
       keyframes: {
         cards: {
@@ -17,7 +17,6 @@ module.exports = {
           "100%": { transform: "translateY(0px)" },
         },
       },
-      
     },
   },
   plugins: [],

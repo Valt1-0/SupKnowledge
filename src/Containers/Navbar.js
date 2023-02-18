@@ -22,9 +22,9 @@ function classNames(...classes) {
 const Navbar = () => {
   const state = useContext(DatasContext);
   const [timeoutToken, setTimeoutToken] = useState(null);
-  const is404Page = useLocation();
+  const location = useLocation();
 
-  console.log(is404Page.pathname);
+  console.log(location.pathname);
 
   const setKeywordDebounced = (keyword) => {
     clearTimeout(timeoutToken);
@@ -46,7 +46,7 @@ const Navbar = () => {
   };
   return (
     <>
-      {is404Page.pathname !== "/404" ? (
+      {location.pathname !== "/404" ? (
         <Disclosure as="nav" className="bg-slate-100 drop-shadow-md">
           {({ open }) => (
             <>
@@ -70,7 +70,7 @@ const Navbar = () => {
                     </Disclosure.Button>
                   </div>
 
-                  <div className="flex flex-1 items-center justify-center sm:items-center sm:justify-between">
+                  <div className="flex flex-1 items-center justify-center sm:items-center sm:justify-evenly">
                     <div className="flex flex-shrink-0 items-center">
                       <a href="/">
                         <img
@@ -131,27 +131,13 @@ const Navbar = () => {
                       </div>
                     </div>
 
-                    <div className="sm:hidden flex justify-end items-end">
-                      <MagnifyingGlassIcon className="text-black" width={25} height={25} />
-                    </div>
-
-                    <div className="hidden sm:ml-6 sm:block">
-                      <div className="flex space-x-4">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-gray-700 text-white"
-                                : "text-gray-900 hover:bg-gray-500 hover:text-white",
-                              "px-3 py-2 rounded-md text-sm font-medium "
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
+                    <div className="sm:hidden">
+                      <div className="flex">
+                        <MagnifyingGlassIcon
+                          className="text-black"
+                          width={25}
+                          height={25}
+                        />
                       </div>
                     </div>
                   </div>

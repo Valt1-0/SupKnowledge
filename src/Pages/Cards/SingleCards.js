@@ -1,41 +1,36 @@
-import { useEffect,useContext, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { DatasContext } from "../../Contexts/DatasContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cards from "../../Components/Cards";
 
-const SingleCards = (req,res) => {
-    
-const state = useContext(DatasContext);
-    const navigate = useNavigate();
-    const location = useLocation();
-    const search = location.search;
-    const [id, setID] = useState(null);
-    const params = new URLSearchParams(search);
-    setID(params.get('id')); 
+const SingleCards = (req, res) => {
+  const [id, setID] = useState(null);
+  const state = useContext(DatasContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-console.log(id);
+  // const params = new URLSearchParams(search);
+  // setID(params.get("id"));
 
-useEffect(() => {
-    if (!id) {
-        return navigate("/404");
+  const objectID = location.pathname.slice(5);
+  // setID(objectID);
+
+  console.log(objectID);
+
+  useEffect(() => {
+    if (!objectID) {
+      return navigate("/404");
     }
 
-    state.fetchSingleArt(id)
-}, [id]);
+    state.fetchSingleArt(objectID);
+  }, [id]);
 
-
-
-return (
-    <div> 
-       {
-            state.SingleToRender.title
-
-       } 
-        <p>console.log("Single");</p>
+  return (
+    <div>
+      {state.SingleToRender.title}
       test
     </div>
-)
-
-}
+  );
+};
 
 export default SingleCards;

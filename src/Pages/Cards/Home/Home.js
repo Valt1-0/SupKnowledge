@@ -134,61 +134,6 @@ const Home = () => {
 
     return (
         <>
-            {/* <input
-        type="search"
-        placeholder="Enter keyword here..."
-        onChange={(e) => setKeywordDebounced(e.target.value)}
-        ref={(input) => input && input.focus()}
-        aria-label="search term"
-      /> */}
-
-            {/* <div className="px-4 sm:px-8 lg:px-16 xl:px-20 mx-auto">
-                <div className="box pt-6">
-                    <div className="box-wrapper">
-                        <div className=" bg-white rounded flex items-center w-full p-3 shadow-sm border border-gray-200">
-                            <button className="outline-none focus:outline-none">
-                                <svg
-                                    className=" w-5 text-gray-600 h-5 cursor-pointer"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </button>
-                            <input
-                                type="search"
-                                name=""
-                                id=""
-                                placeholder="Search an Art Work ..."
-                                x-model="q"
-                                onChange={(e) => setKeywordDebounced(e.target.value)}
-                                ref={(input) => input && input.focus()}
-                                aria-label="search term"
-                                className=" w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
-                            />
-                            <div class="select">
-                                <select
-                                    name=""
-                                    id=""
-                                    x-model="image_type"
-                                    className="text-sm outline-none focus:outline-none bg-transparent"
-                                >
-                                    <option value="all" selected>
-                                        All
-                                    </option>
-                                    <option value="photo">Photo</option>
-                                    <option value="illustration">Illustration</option>
-                                    <option value="vector">Vector</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
 
       {isLoading ? (
         <p>Loading</p>
@@ -199,7 +144,6 @@ const Home = () => {
           <br/>
           <br/>
           <hr />
-          {/* flex justify-center flex-wrap items-center  */}
           <ScrollArrow/>
           <div
             id="Cards-elements"
@@ -214,7 +158,7 @@ const Home = () => {
             {hasMore && loading ? (
               <div className="relative flex ">
                 <div className="absolute  bottom-0 w-full flex justify-center items-center">
-                  <div className="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-10 w-10"></div>
+                  <div className="border-t-transparent border-solid animate-spin  rounded-full border-slate-400 border-8 h-10 w-10"></div>
                 </div>
               </div>
             ) : (
