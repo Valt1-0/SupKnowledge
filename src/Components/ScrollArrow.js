@@ -21,9 +21,9 @@ const ScrollArrow = () => {
   return (
     <div className="flex items-center justify-end mr-10">
       <ArrowUpIcon
-        className="fixed bg-slate-200 border border-white border-4 text-opacity-50 rounded-2xl w-12 h-12 bottom-5 z-50 cursor-pointer opacity-75"
+        className="fixed bg-slate-200 border-4 border-white text-opacity-50 rounded-2xl w-12 h-10 bottom-5 z-50 cursor-pointer opacity-75"
         onClick={scrollTop}
-        style={{ height: 40, display: showScroll ? "flex" : "none" }}
+        style={{ height: 40, width: 40, display: showScroll ? "flex" : "none" }}
       />
     </div>
   );
