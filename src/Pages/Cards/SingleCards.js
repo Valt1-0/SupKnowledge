@@ -23,7 +23,7 @@ const SingleCards = (req, res) => {
     }
 
     state.fetchSingleArt(objectID);
-  }, [id]);
+  }, [objectID]);
 
   return (
     <div>
