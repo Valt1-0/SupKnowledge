@@ -9,7 +9,9 @@ const SingleCards = (req, res) => {
   const navigate = useNavigate();
   const location = useLocation();
 const [isLoading, setIsLoading] = useState(true);
-    const [wikiData, setWikiData] = useState(null);
+    const [descriptionWiki, setWikiDescription] = useState(null);
+    const [imageWiki, setWikiImage] = useState(null);
+    const [wikipediaUrl, setWikipediaUrl] = useState(null);
 
   // const params = new URLSearchParams(search);
   // setID(params.get("id"));
@@ -24,26 +26,34 @@ const fetchWikiData = async (id) => {
     if (id != String.empty) {
 
 
-        const url = `https://www.wikidata.org/w/api.php?origin=*&action=wbgetentities&ids=${id}&props=descriptions&languages=en&format=json`
+        const url = `https://www.wikidata.org/w/api.php?origin=*&action=wbgetentities&ids=${id}&props=claims|descriptions|sitelinks&languages=en&format=json`
         console.log(url)
         const response  = await fetch(url, {
             method: "GET",
             cache: "force-cache",
         })
-           
-        const data = await response.json();
-    description =  data.entities[id].descriptions.en.value;
-    
+           if (response.statusCode === 200) {       
+               const data = await response.json();
+               description =  data.entities[id].descriptions.en.value;
        
-        // if (!response.ok) {
-        //     console.log(response.statusText);
-        //     throw Error(response.statusText);
-        // }
+               setWikiDescription(description)
+               const imageClaim = data.entities[id].claims.P18;
+               if (imageClaim)
+               {
+                   const imageFilename = imageClaim?.mainsnak?.datavalue?.value;
+               const imageSrc = `https://commons.wikimedia.org/wiki/Special:FilePath/${imageFilename}?width=200`;
+               setWikiImage(imageSrc);
        
-        
+               }
+       
+               // Get the Wikipedia URL from the "sitelinks" property
+               const wikipediaLink = data.entities[id].sitelinks.enwiki;
+               const wikipediaUrl = `https://${wikipediaLink?.url}`;
+               setWikipediaUrl(wikipediaUrl);
+        }
         
     }
-    return description;
+    return true;
 }
 
 
@@ -67,9 +77,8 @@ const fetchWikiData = async (id) => {
         console.log("state : ", state.SingleToRender.objectWikidata_URL)
         if (state.SingleToRender.objectWikidata_URL) {
             try {
-                const wiki = await fetchWikiData('Q116392635')
-                setWikiData(wiki)
-                console.log("Wiki : ", wiki)
+                 await fetchWikiData('Q116392635')
+              
             }
             catch (error)
             {
@@ -103,7 +112,7 @@ const fetchWikiData = async (id) => {
                         
                             <div>
                                 
-                             description : {wikiData}
+                              description : {descriptionWiki}
                           </div>  
                          
                     </>
