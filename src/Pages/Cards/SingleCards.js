@@ -79,7 +79,7 @@ const SingleCards = (req, res) => {
             console.log("state : ", state.SingleToRender.objectWikidata_URL)
             if (state.SingleToRender.objectWikidata_URL) {
                 try {
-                    await fetchWikiData('Q116392635')
+                  await fetchWikiData(state.SingleToRender.objectWikidata_URL.split('/').pop())
 
                 }
                 catch (error) {
