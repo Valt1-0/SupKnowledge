@@ -23,7 +23,7 @@ const Cards = (props) => {
           <p className="italic">{props.art.artistDisplayName}</p>
         </div>
         <div className="flex flex-col w-full text-center justify-center items-center">
-          <Link to={`/art/${props.art.objectID}`}>
+          <Link to={`/art/${props.art.objectID}`} target="_blank">
             <button className="text-white text-[1rem] w-24 bg-transparent border-solid border-white border cursor-pointer rounded-md transition duration-500 mt-4 hover:text-black hover:bg-white">
               Learn more
             </button>

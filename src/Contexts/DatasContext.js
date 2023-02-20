@@ -18,11 +18,26 @@ const DatasContextProvider = (props) => {
 
     // fetches only the card clicked and sends it to render
     const fetchSingleArt = async (id) => {
-        const resp = await fetch(
-            `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`
-        );
-        const data = await resp.json();
-        setSingleToRender([...SingleToRender, data]);
+      
+            const resp = await fetch(
+                `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`,
+                {
+                    method: "GET",
+                    cache: "force-cache",
+                }
+            ).then(async response => {
+              const  data = await response.json()
+                        setSingleToRender(data)
+            }
+                      
+            ).
+         catch(
+             setSingleToRender([])
+         )
+        
+        
+      
+        
     };
 
 
@@ -51,6 +66,9 @@ const DatasContextProvider = (props) => {
         }
      //   setIsLoadingDatas(false);
     }
+
+ 
+
 
     const fetchAllArts = async (search, filter) => {
         setIsLoadingDatas(true)
@@ -102,6 +120,7 @@ const DatasContextProvider = (props) => {
         <DatasContext.Provider value={{
             fetchArts,
             fetchSingleArt,
+            SingleToRender,
             setIsLoadingDatas,
             CarouselToRender,
             fetchForCarousel,
