@@ -4,6 +4,7 @@ import Carousel from "../../../Components/Carousel/Carousel";
 import { DatasContext } from "../../../Contexts/DatasContext";
 import ScrollArrow from "../../../Components/ScrollArrow";
 
+
 const Home = () => {
 
     const state = useContext(DatasContext)
@@ -109,11 +110,24 @@ const Home = () => {
                 setLoading(true);
             }
         };
+    console.log("Historiqye ", "")
+    if (document.referrer === window.location.href) {
+      console.log("L'utilisateur est revenu à la page précédente.");
+      // Ajoutez ici les actions à effectuer lorsque l'utilisateur revient à la page précédente.
+    }
+
 
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    window.onpopstate = () => {
+      console.log("GOOO BACK ");
+    }
+
+  });
+
 
     useEffect(() => {
         if (!loading) return;
@@ -121,6 +135,14 @@ const Home = () => {
             const timeoutId = setTimeout(async () => {
                 // fetch more data here, then update the data and loading state
                 currentPage.current = currentPage.current + 10;
+              
+                //save the data to local storage
+                const currentValue = localStorage.getItem("currentPage");
+              if (currentValue != null) {
+                localStorage.removeItem("currentPage");
+              }
+              localStorage.setItem("currentPage", JSON.stringify(currentPage.current));
+
                 await loadData();
                 setLoading(false);
             }, 500);
@@ -130,6 +152,17 @@ const Home = () => {
         data();
 
     }, [loading]);
+
+
+//Save the data to the local storage
+
+  useEffect(() => {
+    const currentValue = localStorage.getItem("artsToRender");
+    if (currentValue != null) {
+      localStorage.removeItem("artsToRender");
+    }
+    localStorage.setItem("artsToRender", JSON.stringify(artsToRender));
+  }, [artsToRender]);
 
 
     return (
