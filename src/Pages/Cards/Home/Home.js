@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef, useLayoutEffect } from "react";
 import Cards from "../../../Components/Cards";
 import Carousel from "../../../Components/Carousel/Carousel";
 import { DatasContext } from "../../../Contexts/DatasContext";
@@ -20,36 +20,46 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const isMountedRef = useRef(true);
 
-
   useEffect(() => {
 
     window.onpopstate = () => {
       const data = async () => {
       if (loc.pathname == window.location.pathname) {
+        setIsLoading(true);
         console.log("GO BACKKK ")
-        isBack.current = true;
-        console.log("IS BACKK ?? ", isBack.current)
-        currentPage.current = localStorage.getItem("currentPage");
-        SetArts(localStorage.getItem("artsToRender"));
-        return true;
+        
+
+        const currentValue = localStorage.getItem("isReturn");
+        if (currentValue != null) {
+          localStorage.removeItem("isReturn");
+        }
+        localStorage.setItem("isReturn", JSON.stringify(true));
+
+
+        currentPage.current = JSON.parse(localStorage.getItem("currentPage"));
+        SetArts(JSON.parse(localStorage.getItem("artsToRender")));
+        setAllObjects(JSON.parse(localStorage.getItem("allObjects")))
+        console.log(JSON.parse(localStorage.getItem("artsToRender")))
+        console.log(JSON.parse(localStorage.getItem("allObjects")))
+       
 
       }
     }
       data();
     }
+
   });
 
 
   const loadData = async () => {
-    console.log("allObjects : ", allObjects);
-    if (allObjects.objectIDs != null) {
+   
+    if (allObjects?.objectIDs?.length > 0 ? allObjects?.objectIDs?.length > 0 : JSON.parse(localStorage.getItem("allObjects"))?.objectIDs?.length > 0)  {
       var arts = [];
-      arts = artsToRender;
-      console.log("sliceStart", currentPage.current - 10);
-      console.log("currentPage", currentPage.current);
-
-      var request = await allObjects.objectIDs
-        .slice(currentPage.current - 10, currentPage.current)
+      arts = artsToRender?.length > 0 ? artsToRender : JSON.parse(localStorage.getItem("artsToRender"));
+      console.log("sliceStart", JSON.parse(localStorage.getItem("currentPage")) > currentPage.current ? JSON.parse(localStorage.getItem("currentPage")) : currentPage.current - 10);
+      console.log("currentPage", JSON.parse(localStorage.getItem("currentPage")) > currentPage.current ? JSON.parse(localStorage.getItem("currentPage")) : currentPage.current)
+      var request = await (allObjects?.objectIDs?.length > 0 ? allObjects?.objectIDs : JSON.parse(localStorage.getItem("allObjects"))?.objectIDs)
+        .slice(JSON.parse(localStorage.getItem("currentPage")) > currentPage.current ? JSON.parse(localStorage.getItem("currentPage")) : currentPage.current - 10, JSON.parse(localStorage.getItem("currentPage")) > currentPage.current ? JSON.parse(localStorage.getItem("currentPage")) : currentPage.current)
         .map(
           async (element) =>
             await fetch(
@@ -82,6 +92,13 @@ const Home = () => {
           else setHasMore(true);
           SetArts(arts);
         }
+        const currentValue = localStorage.getItem("isReturn");
+        if (currentValue != null) {
+          localStorage.removeItem("isReturn");
+        }
+        localStorage.setItem("isReturn", JSON.stringify(false));
+
+
         setLoading(false);
         return false;
       });
@@ -91,14 +108,21 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log("IS BACK / ", isBack.current)
-    if (isMountedRef.current && !isBack.current) {
+    console.log("IS BACK / ", localStorage.getItem("isReturn"))
+    if (isMountedRef.current && (localStorage.getItem("isReturn") === 'false' || localStorage.getItem("isReturn") === null)) {
       console.log("[state.keywords]", "MOUNT ");
     const data = async () => {
       var res = await state.fetchArts({ displayCarousel: true });
       currentPage.current = 10;
       SetArts([]);
       setAllObjects(res);
+      const currentValue = localStorage.getItem("allObjects");
+      if (currentValue != null) {
+        localStorage.removeItem("allObjects");
+      }
+      localStorage.setItem("allObjects", JSON.stringify(res));
+      console.log("res", JSON.parse(localStorage.getItem("allObjects")))
+
     };
     data();
 
@@ -113,6 +137,7 @@ const Home = () => {
 
 
   useEffect(() => {
+    console.log("allobject load",allObjects);
     loadData();
     return;
   }, [allObjects]);
@@ -170,11 +195,16 @@ const Home = () => {
 //Save the data to the local storage
 
   useEffect(() => {
-    const currentValue = localStorage.getItem("artsToRender");
-    if (currentValue != null) {
-      localStorage.removeItem("artsToRender");
+   
+    if (localStorage.getItem("isReturn") === 'false' || localStorage.getItem("isReturn") === null)
+    {
+      console.log('Upd artsToRender')
+      const currentValue = localStorage.getItem("artsToRender");
+      if (currentValue != null) {
+        localStorage.removeItem("artsToRender");
+      }
+      localStorage.setItem("artsToRender", JSON.stringify(artsToRender));
     }
-    localStorage.setItem("artsToRender", JSON.stringify(artsToRender));
   }, [artsToRender]);
 
 
