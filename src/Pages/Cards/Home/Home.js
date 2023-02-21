@@ -207,6 +207,7 @@ const Home = () => {
     }
   }, [artsToRender]);
 
+  document.title = "SupKnowLedge | Home";
 
     return (
         <>

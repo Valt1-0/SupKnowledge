@@ -11,7 +11,7 @@ import { DatasContext } from "../Contexts/DatasContext";
 import logo from "../Assets/img/SupKnowledge2.png";
 
 const navigation = [
-  { name: "Accueil", href: "", current: true },
+  { name: "Accueil", href: "/", current: true },
   { name: "Gallerie", href: "Gallerie", current: false },
 ];
 
@@ -23,8 +23,6 @@ const Navbar = () => {
   const state = useContext(DatasContext);
   const [timeoutToken, setTimeoutToken] = useState(null);
   const location = useLocation();
-
-  console.log(location.pathname);
 
   const setKeywordDebounced = (keyword) => {
     clearTimeout(timeoutToken);
@@ -70,11 +68,11 @@ const Navbar = () => {
                     </Disclosure.Button>
                   </div>
 
-                  <div className="flex flex-1 items-center justify-center sm:items-center sm:justify-evenly">
+                  <div className="flex flex-1 items-center justify-evenly sm:items-center sm:justify-evenly">
                     <div className="flex flex-shrink-0 items-center">
                       <a href="/">
                         <img
-                          className="block h-8 w-8 lg:hidden"
+                          className="block h-8 w-8 lg:hidden  max-s:hidden"
                           src={logo}
                           alt="Logo Of SupKnowledge"
                         />
@@ -91,6 +89,25 @@ const Navbar = () => {
                           <strong>SupKnowledge</strong>
                         </span>
                       </a>
+                    </div>
+                    <div className="hidden sm:ml-6 sm:block">
+                      <div className="flex space-x-4">
+                        {navigation.map((item) => (
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            className={classNames(
+                              item.current
+                                ? "bg-gray-700 text-white"
+                                : "text-gray-900 hover:bg-gray-500 hover:text-white",
+                              "px-3 py-2 rounded-md text-sm font-medium"
+                            )}
+                            aria-current={item.current ? "page" : undefined}
+                          >
+                            {item.name}
+                          </a>
+                        ))}
+                      </div>
                     </div>
 
                     <div className="mx-auto sm:mx-4 max-sm:hidden">
@@ -111,7 +128,7 @@ const Navbar = () => {
                           onChange={(e) => test(e)}
                           ref={(input) => input && input.focus()}
                           aria-label="search term"
-                          className=" w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
+                          className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
                         />
                         <div className="select">
                           <select
@@ -130,15 +147,27 @@ const Navbar = () => {
                         </div>
                       </div>
                     </div>
-
-                    <div className="sm:hidden">
-                      <div className="flex">
+                  </div>
+                  <div className="sm:hidden ml-1 w-2/4">
+                    <div className=" bg-white rounded flex items-center p-1 shadow-sm border border-gray-200">
+                      <button className="outline-none focus:outline-none">
                         <MagnifyingGlassIcon
-                          className="text-black"
+                          className="text-gray-600"
                           width={25}
                           height={25}
                         />
-                      </div>
+                      </button>
+                      <input
+                        type="search"
+                        name=""
+                        id=""
+                        placeholder="Search ..."
+                        x-model="q"
+                        onChange={(e) => test(e)}
+                        ref={(input) => input && input.focus()}
+                        aria-label="search term"
+                        className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
+                      />
                     </div>
                   </div>
                 </div>

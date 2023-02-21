@@ -12,7 +12,7 @@ const Error404 = () => {
     setTimeout(() => setPulsing(false), 600);
   };
 
-  document.title = "SupKnowLedge | 404 Error 😥"
+  document.title = "SupKnowLedge | 404 Error 😥";
 
   return (
     <>
@@ -57,26 +57,26 @@ const Error404 = () => {
           Error
         </motion.span>
       </div>
-      <div className="flex justify-center items-center mt-5">
+      <motion.div
+        className="flex justify-center items-center mt-5"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.8,
+          delay: 0.9,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
+      >
         <Link to="/">
-        <motion.button
-          className="bg-slate-200 rounded hover:bg-slate-400 text-black hover:text-white font-bold py-2 px-4"
-          whileHover={{ scale: 1.1 }}
-          initial={{ opacity: 0}}
-          animate={{ opacity: 1}}
-          transition={{
-            type: "spring",
-            stiffness: 400,
-            damping: 10,
-            duration: 0.8,
-            delay: 0.9,
-            ease: [0, 0.71, 0.2, 1.01],
-          }}
-        >
-          Back to the Menu
-        </motion.button>
+          <motion.button
+            className="bg-slate-200 rounded hover:bg-slate-400 text-black hover:text-white font-bold py-2 px-4"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            Back to the Menu
+          </motion.button>
         </Link>
-      </div>
+      </motion.div>
     </>
   );
 };
