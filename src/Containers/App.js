@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate }  from "react-router-dom";
 
 import Navbar from "./Navbar";
-import Paging from "../Components/Paging";
 import Footer from "../Components/Footer";
 import Error404 from "./404";
 import Home from "../Pages/Cards/Home/Home";

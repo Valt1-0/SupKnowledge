@@ -177,6 +177,7 @@ const Home = () => {
     localStorage.setItem("artsToRender", JSON.stringify(artsToRender));
   }, [artsToRender]);
 
+  document.title = "SupKnowLedge | Home";
 
     return (
         <>
