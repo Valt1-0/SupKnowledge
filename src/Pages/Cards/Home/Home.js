@@ -3,10 +3,11 @@ import Cards from "../../../Components/Cards";
 import Carousel from "../../../Components/Carousel/Carousel";
 import { DatasContext } from "../../../Contexts/DatasContext";
 import ScrollArrow from "../../../Components/ScrollArrow";
-
+import { useLocation } from "react-router-dom";
 
 const Home = () => {
-
+  const loc = useLocation();
+  let isBack = useRef(false);
     const state = useContext(DatasContext)
     const [search, setSearch] = useState(`""`);
     const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +20,24 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const isMountedRef = useRef(true);
 
+
+  useEffect(() => {
+
+    window.onpopstate = () => {
+      const data = async () => {
+      if (loc.pathname == window.location.pathname) {
+        console.log("GO BACKKK ")
+        isBack.current = true;
+        console.log("IS BACKK ?? ", isBack.current)
+        currentPage.current = localStorage.getItem("currentPage");
+        SetArts(localStorage.getItem("artsToRender"));
+        return true;
+
+      }
+    }
+      data();
+    }
+  });
 
 
   const loadData = async () => {
@@ -72,7 +91,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (isMountedRef.current) {
+    console.log("IS BACK / ", isBack.current)
+    if (isMountedRef.current && !isBack.current) {
+      console.log("[state.keywords]", "MOUNT ");
     const data = async () => {
       var res = await state.fetchArts({ displayCarousel: true });
       currentPage.current = 10;
@@ -83,11 +104,12 @@ const Home = () => {
 
         return;
   }
+
     return () => {
       isMountedRef.current = false;
     };
 
-    }, [state.keywords]);
+  }, [state.keywords]);
 
 
   useEffect(() => {
@@ -110,26 +132,17 @@ const Home = () => {
                 setLoading(true);
             }
         };
-    console.log("Historiqye ", "")
-    if (document.referrer === window.location.href) {
-      console.log("L'utilisateur est revenu à la page précédente.");
-      // Ajoutez ici les actions à effectuer lorsque l'utilisateur revient à la page précédente.
-    }
 
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    window.onpopstate = () => {
-      console.log("GOOO BACK ");
-    }
 
-  });
 
 
     useEffect(() => {
+      console.log("useEffect LOADING ", loading)
         if (!loading) return;
         const data = async () => {
             const timeoutId = setTimeout(async () => {
