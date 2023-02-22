@@ -9,6 +9,7 @@ import {
 import { DatasContext } from "../Contexts/DatasContext";
 
 import logo from "../Assets/img/SupKnowledge2.png";
+import Navbutton from "../Components/Navbutton";
 
 const navigation = [
   { name: "Accueil", href: "/", current: true },
@@ -22,7 +23,9 @@ function classNames(...classes) {
 const Navbar = () => {
   const state = useContext(DatasContext);
   const [timeoutToken, setTimeoutToken] = useState(null);
+
   const location = useLocation();
+  const pathname = location.pathname
 
   const setKeywordDebounced = (keyword) => {
     clearTimeout(timeoutToken);
@@ -42,6 +45,7 @@ const Navbar = () => {
 
     console.log("test1 : " + search.target.value);
   };
+
   return (
     <>
       {location.pathname !== "/404" ? (
@@ -92,21 +96,8 @@ const Navbar = () => {
                     </div>
                     <div className="hidden sm:ml-6 sm:block">
                       <div className="flex space-x-4">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-gray-700 text-white"
-                                : "text-gray-900 hover:bg-gray-500 hover:text-white",
-                              "px-3 py-2 rounded-md text-sm font-medium"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
+                          <Navbutton name="Home" link="/" current={pathname == "/" ? true : false}/>
+                          <Navbutton name="Advanced Search" link="/advanced" current={pathname == "/advanced" ? true : false} />
                       </div>
                     </div>
 

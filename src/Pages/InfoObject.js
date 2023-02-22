@@ -1,12 +1,12 @@
 import { useEffect, useContext, useState } from "react";
-import { DatasContext } from "../../Contexts/DatasContext";
+import { DatasContext } from "../Contexts/DatasContext";
 import { useLocation, useNavigate } from "react-router-dom";
-import Cards from "../../Components/Cards";
-import noImage from "../../Assets/img/no-image.png";
+import Cards from "../Components/Cards";
+import noImage from "../Assets/img/no-image.png";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 
-const SingleCards = (req, res) => {
+const InfoObject = (req, res) => {
   const [id, setID] = useState(null);
   const state = useContext(DatasContext);
   const navigate = useNavigate();
@@ -86,10 +86,6 @@ const SingleCards = (req, res) => {
     };
     data();
   }, [state.SingleToRender]);
-
-  const goBack = () => {
-    navigate(-1);
-  };
 
   return (
     <>
@@ -193,4 +189,4 @@ const SingleCards = (req, res) => {
   );
 };
 
-export default SingleCards;
+export default InfoObject;

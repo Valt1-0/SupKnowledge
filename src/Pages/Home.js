@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext, useRef, useLayoutEffect } from "react";
-import Cards from "../../../Components/Cards";
-import Carousel from "../../../Components/Carousel/Carousel";
-import { DatasContext } from "../../../Contexts/DatasContext";
-import ScrollArrow from "../../../Components/ScrollArrow";
+import Cards from "../Components/Cards";
+import Carousel from "../Components/Carousel/Carousel";
+import { DatasContext } from "../Contexts/DatasContext";
+import ScrollArrow from "../Components/ScrollArrow";
 import { useLocation } from "react-router-dom";
 
 const Home = () => {
