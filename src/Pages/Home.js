@@ -23,43 +23,64 @@ const Home = () => {
   useEffect(() => {
 
     window.onpopstate = () => {
-      const data = async () => {
+
       if (loc.pathname == window.location.pathname) {
-        setIsLoading(true);
-        console.log("GO BACKKK ")
+        currentPage.current = parseInt(JSON.parse(sessionStorage.getItem("currentPage"))) + 10;
+
+        console.log("currentPage ", currentPage.current);
+        SetArts(JSON.parse(sessionStorage.getItem("artsToRender")));
+        setAllObjects(JSON.parse(sessionStorage.getItem("allObjects")))
+
+        setLoading(true);
+
+        const currentValue = sessionStorage.getItem("isReturn");
+        if (currentValue != null) {
+          sessionStorage.removeItem("isReturn");
+        }
+        sessionStorage.setItem("isReturn", JSON.stringify(true));
+
+       
         
 
-        const currentValue = localStorage.getItem("isReturn");
-        if (currentValue != null) {
-          localStorage.removeItem("isReturn");
-        }
-        localStorage.setItem("isReturn", JSON.stringify(true));
-
-
-        currentPage.current = JSON.parse(localStorage.getItem("currentPage"));
-        SetArts(JSON.parse(localStorage.getItem("artsToRender")));
-        setAllObjects(JSON.parse(localStorage.getItem("allObjects")))
-        console.log(JSON.parse(localStorage.getItem("artsToRender")))
-        console.log(JSON.parse(localStorage.getItem("allObjects")))
+        
        
-
       }
-    }
-      data();
+
     }
 
-  });
 
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.clear();
+    });
+
+  }, []);
+
+
+  
+
+
+  const removeSessionStorage = () => {
+  
+    sessionStorage.clear();
+  
+  }
 
   const loadData = async () => {
    
-    if (allObjects?.objectIDs?.length > 0 ? allObjects?.objectIDs?.length > 0 : JSON.parse(localStorage.getItem("allObjects"))?.objectIDs?.length > 0)  {
+    if (allObjects?.objectIDs?.length > 0 ? allObjects?.objectIDs?.length > 0 : JSON.parse(sessionStorage.getItem("allObjects"))?.objectIDs?.length > 0)  {
       var arts = [];
-      arts = artsToRender?.length > 0 ? artsToRender : JSON.parse(localStorage.getItem("artsToRender"));
-      console.log("sliceStart", JSON.parse(localStorage.getItem("currentPage")) > currentPage.current ? JSON.parse(localStorage.getItem("currentPage")) : currentPage.current - 10);
-      console.log("currentPage", JSON.parse(localStorage.getItem("currentPage")) > currentPage.current ? JSON.parse(localStorage.getItem("currentPage")) : currentPage.current)
-      var request = await (allObjects?.objectIDs?.length > 0 ? allObjects?.objectIDs : JSON.parse(localStorage.getItem("allObjects"))?.objectIDs)
-        .slice(JSON.parse(localStorage.getItem("currentPage")) > currentPage.current ? JSON.parse(localStorage.getItem("currentPage")) : currentPage.current - 10, JSON.parse(localStorage.getItem("currentPage")) > currentPage.current ? JSON.parse(localStorage.getItem("currentPage")) : currentPage.current)
+      arts = artsToRender?.length > 0 ? artsToRender : JSON.parse(sessionStorage.getItem("artsToRender"));
+
+
+      const sliceStart = currentPage.current - 10;
+      let sliceEnd = currentPage.current
+      if (sessionStorage.getItem("isReturn") == "true")
+        sliceEnd -= 10
+        
+
+
+      console.log(sliceStart);
+      var request = await (allObjects?.objectIDs?.length > 0 ? allObjects?.objectIDs : JSON.parse(sessionStorage.getItem("allObjects"))?.objectIDs).slice(sliceStart, sliceEnd)
         .map(
           async (element) =>
             await fetch(
@@ -92,11 +113,12 @@ const Home = () => {
           else setHasMore(true);
           SetArts(arts);
         }
-        const currentValue = localStorage.getItem("isReturn");
+        const currentValue = sessionStorage.getItem("isReturn");
         if (currentValue != null) {
-          localStorage.removeItem("isReturn");
+          if (currentValue == "true")
+            removeSessionStorage()
         }
-        localStorage.setItem("isReturn", JSON.stringify(false));
+         
 
 
         setLoading(false);
@@ -107,21 +129,28 @@ const Home = () => {
     }
   };
 
+
   useEffect(() => {
-    console.log("IS BACK / ", localStorage.getItem("isReturn"))
-    if (isMountedRef.current && (localStorage.getItem("isReturn") === 'false' || localStorage.getItem("isReturn") === null)) {
+    console.log("IS BACK / ", sessionStorage.getItem("isReturn"))
+    if (isMountedRef.current && (sessionStorage.getItem("isReturn") === 'false' || sessionStorage.getItem("isReturn") === null)) {
       console.log("[state.keywords]", "MOUNT ");
     const data = async () => {
       var res = await state.fetchArts({ displayCarousel: true });
       currentPage.current = 10;
+      console.log("currentPage2 ", currentPage.current);
+      const currentValuePage = sessionStorage.getItem("currentPage");
+      if (currentValuePage != null) {
+        sessionStorage.removeItem("currentPage");
+      }
+      sessionStorage.setItem("currentPage", JSON.stringify(currentPage.current));
       SetArts([]);
       setAllObjects(res);
-      const currentValue = localStorage.getItem("allObjects");
+      const currentValue = sessionStorage.getItem("allObjects");
       if (currentValue != null) {
-        localStorage.removeItem("allObjects");
+        sessionStorage.removeItem("allObjects");
       }
-      localStorage.setItem("allObjects", JSON.stringify(res));
-      console.log("res", JSON.parse(localStorage.getItem("allObjects")))
+      sessionStorage.setItem("allObjects", JSON.stringify(res));
+      console.log("res", JSON.parse(sessionStorage.getItem("allObjects")))
 
     };
     data();
@@ -137,22 +166,28 @@ const Home = () => {
 
 
   useEffect(() => {
-    console.log("allobject load",allObjects);
+    if (sessionStorage.getItem("isReturn") != "true")
+    {
+    console.log("allObjects effet déclanché ")
     loadData();
-    return;
+  }
   }, [allObjects]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const targetDiv = document.querySelector("#Cards-elements");
 
+
+
+    
+    const handleScroll = () => {
+      console.log('Scroll');
+      const targetDiv = document.querySelector("#Cards-elements");
+      console.log("targetDiv",targetDiv);
       if (!targetDiv) return;
 
             const targetDivRect = targetDiv.getBoundingClientRect();
-            console.log(targetDivRect)
-            console.log(window.innerHeight)
-            console.log(targetDivRect.bottom > window.innerHeight)
+      console.log(targetDivRect.bottom >= window.innerHeight)
             if (targetDivRect.bottom >= window.innerHeight) return;
+      console.log("allObjects", allObjects)
             if (allObjects != null) {
                 setLoading(true);
             }
@@ -175,11 +210,11 @@ const Home = () => {
                 currentPage.current = currentPage.current + 10;
               
                 //save the data to local storage
-                const currentValue = localStorage.getItem("currentPage");
+                const currentValue = sessionStorage.getItem("currentPage");
               if (currentValue != null) {
-                localStorage.removeItem("currentPage");
+                sessionStorage.removeItem("currentPage");
               }
-              localStorage.setItem("currentPage", JSON.stringify(currentPage.current));
+              sessionStorage.setItem("currentPage", JSON.stringify(currentPage.current));
 
                 await loadData();
                 setLoading(false);
@@ -189,21 +224,21 @@ const Home = () => {
 
         data();
 
-    }, [loading]);
+    }, [loading, sessionStorage.getItem("isReturn")]);
 
 
 //Save the data to the local storage
 
   useEffect(() => {
    
-    if (localStorage.getItem("isReturn") === 'false' || localStorage.getItem("isReturn") === null)
+    if (sessionStorage.getItem("isReturn") === 'false' || sessionStorage.getItem("isReturn") === null)
     {
       console.log('Upd artsToRender')
-      const currentValue = localStorage.getItem("artsToRender");
+      const currentValue = sessionStorage.getItem("artsToRender");
       if (currentValue != null) {
-        localStorage.removeItem("artsToRender");
+        sessionStorage.removeItem("artsToRender");
       }
-      localStorage.setItem("artsToRender", JSON.stringify(artsToRender));
+      sessionStorage.setItem("artsToRender", JSON.stringify(artsToRender));
     }
   }, [artsToRender]);
 
