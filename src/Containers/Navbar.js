@@ -23,7 +23,7 @@ function classNames(...classes) {
 const Navbar = () => {
   const state = useContext(DatasContext);
   const [timeoutToken, setTimeoutToken] = useState(null);
-
+  
   const location = useLocation();
   const pathname = location.pathname
 
@@ -102,7 +102,7 @@ const Navbar = () => {
                     </div>
 
                     <div className="mx-auto sm:mx-4 max-sm:hidden">
-                      <div className=" bg-white rounded flex items-center w-full p-3 shadow-sm border border-gray-200">
+                      <div className=" bg-white rounded flex items-center w-72 p-3 shadow-sm border border-gray-200">
                         <button className="outline-none focus:outline-none">
                           <MagnifyingGlassIcon
                             className="text-gray-600"
@@ -119,23 +119,8 @@ const Navbar = () => {
                           onChange={(e) => test(e)}
                           ref={(input) => input && input.focus()}
                           aria-label="search term"
-                          className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
+                          className="w-full pl-2 text-sm outline-none focus:outline-none bg-transparent"
                         />
-                        <div className="select">
-                          <select
-                            name=""
-                            id=""
-                            x-model="image_type"
-                            className="text-sm outline-none focus:outline-none bg-transparent"
-                          >
-                            <option value="all" selected>
-                              All
-                            </option>
-                            <option value="photo">Photo</option>
-                            <option value="illustration">Illustration</option>
-                            <option value="vector">Vector</option>
-                          </select>
-                        </div>
                       </div>
                     </div>
                   </div>
