@@ -101,6 +101,7 @@ const DatasContextProvider = (props) => {
         fetchForCarousel,
         isLoadingDatas,
         setKeywords,
+        setFilter,
         keywords,
       }}
     >

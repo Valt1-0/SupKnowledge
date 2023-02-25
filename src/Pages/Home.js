@@ -39,11 +39,6 @@ const Home = () => {
         }
         sessionStorage.setItem("isReturn", JSON.stringify(true));
 
-       
-        
-
-        
-       
       }
 
     }
