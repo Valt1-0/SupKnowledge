@@ -3,7 +3,7 @@ import TouchSweep from "touchsweep"
 import '../Carousel/Carousel.css';
 import noImage from '../../Assets/img/no-image.png';
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline"
-
+import { Link } from "react-router-dom";
 
 export const Carousel = props => {
     const itemWidth = props.itemWidth
@@ -12,7 +12,7 @@ export const Carousel = props => {
     const theta = 360 / len
 
     const ref = React.useRef(null)
-    const [selectedIndex, setSelectedIndex] = React.useState(0)
+    const [selectedIndex, setSelectedIndex] = React.useState(JSON.parse(sessionStorage.getItem("selectedIndexCasousel")) > 0 ? JSON.parse(sessionStorage.getItem("selectedIndexCasousel")) : 0)
 
     const getSlideStyle = index => {
         const style = {}
@@ -55,12 +55,14 @@ export const Carousel = props => {
 
         area?.addEventListener("swipeleft", next)
         area?.addEventListener("swiperight", prev)
+        
 
         return () => {
             touchsweep.unbind()
 
             area?.removeEventListener("swipeleft", next)
             area?.removeEventListener("swiperight", prev)
+            sessionStorage.setItem("selectedIndexCasousel", JSON.stringify(selectedIndex))
         }
     })
 
@@ -83,6 +85,11 @@ export const Carousel = props => {
                                         <strong>{item.title.length > 10 ? item.title.slice(0, 10).concat("...") : item.title}</strong>
                                         <span>{item.artistDisplayName}</span>
                                         <span>{item.objectDate}</span>
+                                        <Link to={`/art/${item.objectID}`} >
+                                            <button className="text-white text-[1rem] w-24 bg-transparent border-solid border-white border cursor-pointer rounded-md transition duration-500 mt-4 hover:text-black hover:bg-white">
+                                                Learn more
+                                            </button>
+                                        </Link>
                                     </div>
                                 )}
                             </div>
@@ -92,7 +99,7 @@ export const Carousel = props => {
             </div>
 
             {props.showControls && (
-                <div className={getClassName("__controls")}>
+                <div  className={getClassName("__controls")}>
                     <button
                         className={getClassName(["__control", "__control--prev"])}
                         onClick={prev}

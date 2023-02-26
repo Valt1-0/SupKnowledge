@@ -32,8 +32,13 @@ const DatasContextProvider = (props) => {
   const fetchForCarousel = async () => {
     var art = [];
     const res = await fetchAllArts(keywords, ["isHightlight=true"]);
+    if (!res.objectIDs) 
+    {
+      setHighlightCarousel([])
+      return ;
+    }
 
-    for (var i = 0; i <= res.objectIDs.length - 1; i++) {
+    for (var i = 0; i <= res?.objectIDs?.length - 1; i++) {
       var response = await fetch(
         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${res.objectIDs[i]}`,
         {
@@ -45,11 +50,12 @@ const DatasContextProvider = (props) => {
 
       if (data1.objectID && data1.primaryImageSmall != "") {
         console.log(data1.primaryImageSmall != "");
-        art = [...art, data1];
-        setHighlightCarousel(art);
-        if (art.length > 10) return false;
+        art = [...art, data1];  
+        if (art.length > 10) 
+        { setHighlightCarousel(art); return false;}
       }
     }
+   
     //   setIsLoadingDatas(false);
   };
 

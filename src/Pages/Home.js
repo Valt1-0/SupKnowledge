@@ -1,88 +1,159 @@
-import React, { useEffect, useState, useContext, useRef, useLayoutEffect } from "react";
+import React, { useEffect, useState, useContext, useRef, useReducer, useLayoutEffect } from "react";
 import Cards from "../Components/Cards";
 import Carousel from "../Components/Carousel/Carousel";
 import { DatasContext } from "../Contexts/DatasContext";
 import ScrollArrow from "../Components/ScrollArrow";
 import { useLocation } from "react-router-dom";
 
+
+const initialState = {
+
+
+  allObjects: [],
+  artsToRender: [],
+
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_ARTS_AND_ALL_OBJECTS':
+      sessionStorage.setItem("allObjects", JSON.stringify(action.payload.allObjects));
+      sessionStorage.setItem("artsToRender", JSON.stringify(action.payload.artsToRender));
+
+      console.log(" SET_ARTS_AND_ALL_OBJECTS artsToRender : ", action.payload.artsToRender, " allObjects : ", action.payload.allObjects)
+      return {
+        artsToRender: action.payload.artsToRender,
+        allObjects: action.payload.allObjects
+      };
+    case 'SET_ALL_OBJECTS':
+      sessionStorage.setItem("allObjects", JSON.stringify(action.payload.allObjects))
+      console.log(" SET_ALL_OBJECTS artsToRender : ", action.payload.artsToRender, " allObjects : ", action.payload.allObjects)
+      return {
+        ...state,
+        allObjects: action.payload.allObjects,
+
+      };
+    case 'SET_ARTS':
+      sessionStorage.setItem("artsToRender", JSON.stringify(action.payload.artsToRender));
+      console.log(" SET_ARTS artsToRender : ", action.payload.artsToRender, " allObjects : ", state.allObjects)
+      return {
+        ...state,
+        artsToRender: action.payload.artsToRender
+      };
+    default:
+      throw new Error();
+  }
+}
+
+
 const Home = () => {
   const loc = useLocation();
-  let isBack = useRef(false);
-    const state = useContext(DatasContext)
-    const [search, setSearch] = useState(`""`);
-    const [isLoading, setIsLoading] = useState(false);
-    const [sliceStart, setSliceStart] = useState(0);
-    const currentPage = React.useRef(10);
-    const [allObjects, setAllObjects] = useState([]);
-    const [artsToRender, SetArts] = useState([]);
-    const [hasMore, setHasMore] = useState(false);
+  const state = useContext(DatasContext)
+  const [isLoading, setIsLoading] = useState(false);
 
+  const currentPage = React.useRef(10);
+  const [hasMore, setHasMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const isMountedRef = useRef(true);
+  const [state2, dispatch] = useReducer(reducer, initialState);
+  const scrollPosition = useRef(0);
+
+
+
+  useLayoutEffect(() => {
+
+    window.onpopstate = async () => {
+      if (loc.pathname == window.location.pathname) {
+        sessionStorage.removeItem("isReturn");
+        sessionStorage.setItem("isReturn", JSON.stringify(true));
+      }
+    }
+
+  })
+
+  const handleScroll = () => {
+    const targetDiv = document.querySelector("#Cards-elements");
+    if (!targetDiv) return;
+
+    const targetDivRect = targetDiv.getBoundingClientRect();
+    console.log(targetDivRect.bottom >= window.innerHeight)
+    scrollPosition.current = window.scrollY;
+    if (targetDivRect.bottom >= window.innerHeight) return;
+    console.log("scrollY", window.scrollY)
+
+    setLoading(true);
+  };
 
   useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
 
-    window.onpopstate = () => {
+    const isFirstLoad = (/true/).test(sessionStorage.getItem("isFirstLoad")?.includes("false"))
 
-      if (loc.pathname == window.location.pathname) {
+    if (isFirstLoad && (/true/).test(sessionStorage.getItem("isReturn")?.includes("true"))) {
+
+      const data = async () => {
+        console.log('====================================');
+        console.log("Set DATA");
+        console.log('====================================');
         currentPage.current = parseInt(JSON.parse(sessionStorage.getItem("currentPage"))) + 10;
+        console.log('====================================');
+        console.log("getItem(scrollPosition)", JSON.parse(sessionStorage.getItem("scrollPosition")))
 
-        console.log("currentPage ", currentPage.current);
-        SetArts(JSON.parse(sessionStorage.getItem("artsToRender")));
-        setAllObjects(JSON.parse(sessionStorage.getItem("allObjects")))
+        scrollPosition.current = JSON.parse(sessionStorage.getItem("scrollPosition"))
+        dispatch({ type: 'SET_ARTS_AND_ALL_OBJECTS', payload: { artsToRender: JSON.parse(sessionStorage.getItem("artsToRender")), allObjects: JSON.parse(sessionStorage.getItem("allObjects")) } });
 
-        setLoading(true);
-
-        const currentValue = sessionStorage.getItem("isReturn");
-        if (currentValue != null) {
-          sessionStorage.removeItem("isReturn");
-        }
-        sessionStorage.setItem("isReturn", JSON.stringify(true));
-
-       
-        
-
-        
-       
       }
-
+      data();
     }
 
 
+
+
+
     window.addEventListener('beforeunload', () => {
+      console.log('clear sesion data')
       sessionStorage.clear();
+
     });
 
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      sessionStorage.removeItem(["currentPage"]);
+      sessionStorage.setItem("currentPage", JSON.stringify(currentPage.current));
+      sessionStorage.setItem("isFirstLoad", JSON.stringify(false));
+      sessionStorage.setItem("scrollPosition", JSON.stringify(scrollPosition.current));
+      isMountedRef.current = false;
+
+    }
   }, []);
 
 
-  
 
-
-  const removeSessionStorage = () => {
-  
-    sessionStorage.clear();
-  
+  async function fetchData() {
+    var res = await state.fetchArts({ displayCarousel: true });
+    dispatch({ type: 'SET_ARTS_AND_ALL_OBJECTS', payload: { artsToRender: [], allObjects: res } });
   }
 
-  const loadData = async () => {
-   
-    if (allObjects?.objectIDs?.length > 0 ? allObjects?.objectIDs?.length > 0 : JSON.parse(sessionStorage.getItem("allObjects"))?.objectIDs?.length > 0)  {
-      var arts = [];
-      arts = artsToRender?.length > 0 ? artsToRender : JSON.parse(sessionStorage.getItem("artsToRender"));
 
+
+
+  const loadData = async () => {
+    console.log("Loading", state2.allObjects);
+    if (state2.allObjects?.objectIDs?.length > 0) {
+      var arts = [];
+      arts = state2.artsToRender
 
       const sliceStart = currentPage.current - 10;
       let sliceEnd = currentPage.current
+
       if (sessionStorage.getItem("isReturn") == "true")
         sliceEnd -= 10
-        
 
-
-      console.log(sliceStart);
-      var request = await (allObjects?.objectIDs?.length > 0 ? allObjects?.objectIDs : JSON.parse(sessionStorage.getItem("allObjects"))?.objectIDs).slice(sliceStart, sliceEnd)
+      var request = await (state2.allObjects?.objectIDs).slice(sliceStart, sliceEnd)
         .map(
-          async (element) =>
+          async (element) => {
+            console.log(element);
+
             await fetch(
               `https://collectionapi.metmuseum.org/public/collection/v1/objects/${element}`,
               {
@@ -105,163 +176,105 @@ const Home = () => {
               .catch((error) => {
                 console.error("Erreur lors du second fetch :", error);
               })
+          }
         );
 
       return await Promise.all(request).then(() => {
         if (arts.length > 0) {
-          if (arts.length < 10) setHasMore(false);
+          if (arts.length < 10)
+            setHasMore(false);
           else setHasMore(true);
-          SetArts(arts);
+          dispatch({ type: 'SET_ARTS', payload: { artsToRender: arts } });
         }
         const currentValue = sessionStorage.getItem("isReturn");
         if (currentValue != null) {
-          if (currentValue == "true")
-            removeSessionStorage()
+          if (currentValue == "true") {
+            sessionStorage.removeItem("isReturn");
+            window.scrollTo(0, scrollPosition.current);
+          }
         }
-         
+
 
 
         setLoading(false);
         return false;
       });
     } else {
-      setHasMore(false);
+      // setHasMore(false);
     }
   };
 
 
   useEffect(() => {
-    console.log("IS BACK / ", sessionStorage.getItem("isReturn"))
-    if (isMountedRef.current && (sessionStorage.getItem("isReturn") === 'false' || sessionStorage.getItem("isReturn") === null)) {
+    console.log("state.keywords")
+    console.log("IS REUTNR ", sessionStorage.getItem("isReturn"))
+    if (isMountedRef.current && (sessionStorage.getItem("isReturn") == 'false' || sessionStorage.getItem("isReturn") == null)) {
       console.log("[state.keywords]", "MOUNT ");
-    const data = async () => {
-      var res = await state.fetchArts({ displayCarousel: true });
-      currentPage.current = 10;
-      console.log("currentPage2 ", currentPage.current);
-      const currentValuePage = sessionStorage.getItem("currentPage");
-      if (currentValuePage != null) {
-        sessionStorage.removeItem("currentPage");
-      }
-      sessionStorage.setItem("currentPage", JSON.stringify(currentPage.current));
-      SetArts([]);
-      setAllObjects(res);
-      const currentValue = sessionStorage.getItem("allObjects");
-      if (currentValue != null) {
-        sessionStorage.removeItem("allObjects");
-      }
-      sessionStorage.setItem("allObjects", JSON.stringify(res));
-      console.log("res", JSON.parse(sessionStorage.getItem("allObjects")))
 
-    };
-    data();
+      const data = async () => {
+        currentPage.current = 10;
+        await fetchData();
+      };
+      data();
 
-        return;
-  }
-
-    return () => {
-      isMountedRef.current = false;
-    };
-
+      return;
+    }
   }, [state.keywords]);
 
 
-  useEffect(() => {
-    if (sessionStorage.getItem("isReturn") != "true")
-    {
-    console.log("allObjects effet déclanché ")
-    loadData();
-  }
-  }, [allObjects]);
+
+
 
   useEffect(() => {
-
-
-
-    
-    const handleScroll = () => {
-      console.log('Scroll');
-      const targetDiv = document.querySelector("#Cards-elements");
-      console.log("targetDiv",targetDiv);
-      if (!targetDiv) return;
-
-            const targetDivRect = targetDiv.getBoundingClientRect();
-      console.log(targetDivRect.bottom >= window.innerHeight)
-            if (targetDivRect.bottom >= window.innerHeight) return;
-      console.log("allObjects", allObjects)
-            if (allObjects != null) {
-                setLoading(true);
-            }
-        };
-
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-
-
-
-    useEffect(() => {
-      console.log("useEffect LOADING ", loading)
-        if (!loading) return;
-        const data = async () => {
-            const timeoutId = setTimeout(async () => {
-                // fetch more data here, then update the data and loading state
-                currentPage.current = currentPage.current + 10;
-              
-                //save the data to local storage
-                const currentValue = sessionStorage.getItem("currentPage");
-              if (currentValue != null) {
-                sessionStorage.removeItem("currentPage");
-              }
-              sessionStorage.setItem("currentPage", JSON.stringify(currentPage.current));
-
-                await loadData();
-                setLoading(false);
-            }, 500);
-            return () => clearTimeout(timeoutId);
-        }
-
-        data();
-
-    }, [loading, sessionStorage.getItem("isReturn")]);
-
-
-//Save the data to the local storage
-
-  useEffect(() => {
-   
-    if (sessionStorage.getItem("isReturn") === 'false' || sessionStorage.getItem("isReturn") === null)
-    {
-      console.log('Upd artsToRender')
-      const currentValue = sessionStorage.getItem("artsToRender");
-      if (currentValue != null) {
-        sessionStorage.removeItem("artsToRender");
-      }
-      sessionStorage.setItem("artsToRender", JSON.stringify(artsToRender));
+    console.log("useEffect LOADING ", loading)
+    if (!loading) return;
+    const data = async () => {
+      const timeoutId = setTimeout(async () => {
+        // fetch more data here, then update the data and loading state
+        currentPage.current = currentPage.current + 10;
+        //  console.log("useEffect LOADING ", loading)
+        await loadData();
+        return;
+      }, 500);
+      return () => clearTimeout(timeoutId);
     }
-  }, [artsToRender]);
+
+    data();
+
+  }, [loading == false]);
+
+
+  //Save the data to the local storage
+
+  useEffect(() => {
+    console.log("allObjects EFFECTS ", state2.allObjects, state2.artsToRender);
+    if (state2.allObjects?.objectIDs?.length > 0) {
+
+      console.log("LOADDDDDDDD");
+      loadData();
+    }
+  }, [state2.allObjects]);
 
   document.title = "SupKnowLedge | Home";
 
-    return (
-        <>
+  return (
+    <>
 
       {isLoading ? (
         <p>Loading</p>
       ) : (
         <>
-          <br/>
-          <Carousel items={state.CarouselToRender} />
-          <br/>
-          <br/>
+          <br />
+          <Carousel items={state.CarouselToRender} showControls={state.CarouselToRender?.length > 0 ? true : false} />
+          <br />
+          <br />
           <hr />
-          <ScrollArrow/>
+          <ScrollArrow />
           <div
             id="Cards-elements"
             className="flex justify-center flex-wrap items-center "
           >
-            {artsToRender.map((art, index) => (
+            {state2.artsToRender?.map((art, index) => (
               <Cards key={index} art={art} />
             ))}{" "}
           </div>
