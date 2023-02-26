@@ -9,11 +9,12 @@ import {
 import { DatasContext } from "../Contexts/DatasContext";
 
 import logo from "../Assets/img/SupKnowledge2.png";
-import Navbutton from "../Components/Navbutton";
+import NavButton from "../Components/NavButton";
+import NavRespButton from "../Components/NavRespButton";
 
 const navigation = [
-  { name: "Accueil", href: "/", current: true },
-  { name: "Gallerie", href: "Gallerie", current: false },
+  { name: "Home", href: "/", current: true },
+  { name: "Advanced Search", href: "/advanced", current: false },
 ];
 
 function classNames(...classes) {
@@ -25,7 +26,7 @@ const Navbar = () => {
   const [timeoutToken, setTimeoutToken] = useState(null);
 
   const location = useLocation();
-  const pathname = location.pathname
+  const pathname = location.pathname;
 
   const setKeywordDebounced = (keyword) => {
     clearTimeout(timeoutToken);
@@ -96,13 +97,21 @@ const Navbar = () => {
                     </div>
                     <div className="hidden sm:ml-6 sm:block">
                       <div className="flex space-x-4">
-                          <Navbutton name="Home" link="/" current={pathname == "/" ? true : false}/>
-                          <Navbutton name="Advanced Search" link="/advanced" current={pathname == "/advanced" ? true : false} />
+                        <NavButton
+                          name="Home"
+                          link="/"
+                          current={pathname == "/" ? true : false}
+                        />
+                        <NavButton
+                          name="Advanced Search"
+                          link="/advanced"
+                          current={pathname == "/advanced" ? true : false}
+                        />
                       </div>
                     </div>
 
                     <div className="mx-auto sm:mx-4 max-sm:hidden">
-                      <div className=" bg-white rounded flex items-center w-full p-3 shadow-sm border border-gray-200">
+                      <div className=" bg-white rounded flex items-center w-72 p-3 shadow-sm border border-gray-200">
                         <button className="outline-none focus:outline-none">
                           <MagnifyingGlassIcon
                             className="text-gray-600"
@@ -119,23 +128,8 @@ const Navbar = () => {
                           onChange={(e) => test(e)}
                           ref={(input) => input && input.focus()}
                           aria-label="search term"
-                          className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
+                          className="w-full pl-2 text-sm outline-none focus:outline-none bg-transparent"
                         />
-                        <div className="select">
-                          <select
-                            name=""
-                            id=""
-                            x-model="image_type"
-                            className="text-sm outline-none focus:outline-none bg-transparent"
-                          >
-                            <option value="all" selected>
-                              All
-                            </option>
-                            <option value="photo">Photo</option>
-                            <option value="illustration">Illustration</option>
-                            <option value="vector">Vector</option>
-                          </select>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -163,27 +157,16 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-
-              <Disclosure.Panel className="sm:hidden">
-                <div className="space-y-1 px-2 pt-2 pb-3">
-                  {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-700 text-white"
-                          : "text-gray-900 hover:bg-gray-500 hover:text-white",
-                        "block px-3 py-2 rounded-md text-base font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
-                </div>
-              </Disclosure.Panel>
+              <NavRespButton
+                name="Home"
+                link="/"
+                current={pathname == "/" ? true : false}
+              />
+              <NavRespButton
+                name="Advanced Search"
+                link="/advanced"
+                current={pathname == "/advanced" ? true : false}
+              />
             </>
           )}
         </Disclosure>

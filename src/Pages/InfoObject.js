@@ -5,6 +5,7 @@ import Cards from "../Components/Cards";
 import noImage from "../Assets/img/no-image.png";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
+import { string } from "i/lib/util";
 
 const InfoObject = (req, res) => {
   const [id, setID] = useState(null);
@@ -50,6 +51,7 @@ const InfoObject = (req, res) => {
 
         // Get the Wikipedia URL from the "sitelinks" property
         const wikipediaLink = data.entities[id].sitelinks.enwiki;
+
         const wikipediaUrl = `https://${wikipediaLink?.url}`;
         setWikipediaUrl(wikipediaUrl);
 
@@ -162,19 +164,32 @@ const InfoObject = (req, res) => {
                   ? state.SingleToRender.dimensions
                   : "Unknown Dimensions"}
               </div>
+              {console.log("pedia : " + wikipediaUrl, "data : " + wikidataUrl)}
+              {console.log(/false/.test(wikipediaUrl?.includes("undefined")))}
 
-              <a
-                href={wikipediaUrl == "undefined" ? wikipediaUrl : wikidataUrl}
-                target="_blank"
-              >
-                <motion.button
-                  className="bg-slate-200 rounded hover:bg-slate-400 text-black hover:text-white font-bold py-2 px-4"
+              {/false/.test(wikipediaUrl?.includes("undefined")) ? (
+                wikipediaUrl
+              ) : wikidataUrl !== null ? (
+                <a
+                  href={
+                    /false/.test(wikipediaUrl?.includes("undefined"))
+                      ? wikipediaUrl
+                      : wikidataUrl
+                  }
                   target="_blank"
-                  whileHover={{ scale: 1.1 }}
+                  rel="noreferrer"
                 >
-                  Learn more about this art
-                </motion.button>
-              </a>
+                  <motion.button
+                    className="bg-slate-200 rounded hover:bg-slate-400 text-black hover:text-white font-bold py-2 px-4"
+                    target="_blank"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    Learn more about this art
+                  </motion.button>
+                </a>
+              ) : (
+                <> </>
+              )}
             </div>
           </div>
 
