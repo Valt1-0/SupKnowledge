@@ -220,7 +220,7 @@ const Arts = () => {
 
             return;
         }
-    }, [state.keywords]);
+    }, [state.keywords, state.filter]);
 
 
 
