@@ -32,13 +32,14 @@ const DatasContextProvider = (props) => {
   const fetchForCarousel = async () => {
     var art = [];
     const res = await fetchAllArts(keywords, ["isHightlight=true"]);
-    if (!res.objectIDs) 
+    if (!res?.objectIDs) 
     {
       setHighlightCarousel([])
       return ;
     }
 
     for (var i = 0; i <= res?.objectIDs?.length - 1; i++) {
+     
       var response = await fetch(
         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${res.objectIDs[i]}`,
         {
@@ -46,30 +47,31 @@ const DatasContextProvider = (props) => {
           cache: "force-cache",
         }
       );
+
+      if (response.ok)
+      {
       const data1 = await response.json();
 
       if (data1.objectID && data1.primaryImageSmall != "") {
-        console.log(data1.primaryImageSmall != "");
         art = [...art, data1];  
         if (art.length > 10) 
         { setHighlightCarousel(art); return false;}
       }
-    }
-   
-    //   setIsLoadingDatas(false);
+    }}
   };
 
-  const fetchAllArts = async (search, filter) => {
+  const fetchAllArts = async (search, filterProps) => {
     setIsLoadingDatas(true);
     var url =
       "https://collectionapi.metmuseum.org/public/collection/v1/objects";
 
-    if ((search.length > 0 && search != `""`) || filter.length != 0)
+
+
+    if ((search.length > 0 && search != `""`) || filterProps.length != 0)
       url = `https://collectionapi.metmuseum.org/public/collection/v1/search?${
-        filter.length > 0 ? filter.join("&") + "&" : ""
+        filterProps.length > 0 ? filterProps +"&" : ""
       }q=${search}`;
 
-    console.log(url);
 
     return await fetch(url, {
       method: "GET",

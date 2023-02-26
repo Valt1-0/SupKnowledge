@@ -18,18 +18,13 @@ const InfoObject = (req, res) => {
   const [wikipediaUrl, setWikipediaUrl] = useState(null);
   const [wikidataUrl, setWikidataUrl] = useState(null);
 
-  // const params = new URLSearchParams(search);
-  // setID(params.get("id"));
-
   const objectID = location.pathname.slice(5);
-  // setID(objectID);
+
 
   const fetchWikiData = async (id) => {
-    console.log("ID :" + id);
     let description = String.empty;
     if (id != String.empty) {
       const url = `https://www.wikidata.org/w/api.php?origin=*&action=wbgetentities&ids=${id}&props=claims|descriptions|sitelinks&languages=en&format=json`;
-      console.log(url);
       const response = await fetch(url, {
         method: "GET",
         cache: "force-cache",
@@ -74,7 +69,6 @@ const InfoObject = (req, res) => {
 
   useEffect(() => {
     const data = async () => {
-      console.log("state : ", state.SingleToRender.objectWikidata_URL);
       if (state.SingleToRender.objectWikidata_URL) {
         try {
           await fetchWikiData(
@@ -95,15 +89,15 @@ const InfoObject = (req, res) => {
         <p data-testid="Loading">Loading</p>
       ) : state.SingleToRender.message == undefined ? (
         <>
-            <div data-testid="InfoObject" className="flex flex-col lg:flex-row mx-10 my-20 justify-between items-start lg:items-center text-sm">
+          <div data-testid="InfoObject" className="flex flex-col lg:flex-row mx-10 my-20 justify-between items-start lg:items-center text-sm">
             <div className="w-[300px] m-auto">
               <img
                 src={
                   imageWiki != null
                     ? imageWiki
                     : state.SingleToRender.primaryImage
-                    ? state.SingleToRender.primaryImage
-                    : noImage
+                      ? state.SingleToRender.primaryImage
+                      : noImage
                 }
                 alt=""
                 className="w-full rounded"
@@ -164,9 +158,6 @@ const InfoObject = (req, res) => {
                   ? state.SingleToRender.dimensions
                   : "Unknown Dimensions"}
               </div>
-              {console.log("pedia : " + wikipediaUrl, "data : " + wikidataUrl)}
-              {console.log(/false/.test(wikipediaUrl?.includes("undefined")))}
-
               {/false/.test(wikipediaUrl?.includes("undefined")) ? (
                 wikipediaUrl
               ) : wikidataUrl !== null ? (
@@ -199,9 +190,9 @@ const InfoObject = (req, res) => {
           </button> */}
         </>
       ) : (
-        <> 
-         {navigate("/404")}
-         </>
+        <>
+          {navigate("/404")}
+        </>
       )}
     </>
   );

@@ -34,6 +34,7 @@ const Advanced = () => {
 
   useLayoutEffect(() => {
     GetListDepartment();
+    return () => state.setFilter("")
   }, []);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const Advanced = () => {
     if (dateEnd != 0) handleFilterChange("dateEnd", dateEnd);
   }, [dateEnd]);
 
-  
+
   useEffect(() => {
     state.setFilter(filter)
   }, [filter]);
@@ -57,7 +58,6 @@ const Advanced = () => {
         throw Error(response.statusText);
       }
       const data = await response.json();
-      console.log(data);
       setListDepartment(data.departments);
     } catch (error) {
       console.error(error);
@@ -65,20 +65,15 @@ const Advanced = () => {
   };
 
   function handleFilterChange(key, value) {
-    console.log(key, value);
     // Supprimer la valeur si value est undefined
     if (value === undefined) {
-      // setFilter(filter.replace(`${key}=${filter[key]}&`, ''));
-      // delete filter[key];
-
       const regex = new RegExp(`${key}=[^&]*&?`, "g");
       const deleteFilter = filter.replace(regex, "");
-      // console.log(filter);
-      // console.log("deleteFilter", deleteFilter);
-      if (deleteFilter.endsWith("&")) setFilter("");
-      else setFilter(deleteFilter);
-      // const regex = new RegExp(`${key}=[^&]*&?`);
-      // setFilter( filter.replace(regex, ""));
+
+      if (deleteFilter.endsWith("&"))
+        setFilter("");
+      else
+        setFilter(deleteFilter);
     } else {
       // Modifier la valeur si elle existe déjà
       const regex = new RegExp(`${key}=[^&]*`);
@@ -96,11 +91,9 @@ const Advanced = () => {
   });
 
   const handleCheckboxChange = (optionName) => (event) => {
-  
+
     const value = event.target.checked;
     setOptions({ ...options, [optionName]: value });
-    console.log(`${optionName} : ${value}`);
-
     handleFilterChange(optionName, value)
   };
 
@@ -113,47 +106,7 @@ const Advanced = () => {
           <div className="border-b shadow-md">
             <div className="m-5">
               <strong className="my-5">Filter By</strong>
-
-              {/* `https://collectionapi.metmuseum.org/public/collection/v1/objects/${element}`, */}
-              {/* "medium" */}
               <div className="flex justify-evenly items-center my-5">
-                {/* <Select
-                  className=" placeholder-gray-500"
-                  mode="multiple"
-                  labelInValue
-                  placeholder="Object Type / Material"
-                  style={{ width: 200 }}
-                  options={[
-                    //MAP
-
-                    {
-                      value: "jack",
-                      label: "Jack (100)",
-                    },
-                  ]}
-                /> */}
-
-                {/* country */}
-                {/* <Select
-                  labelInValue
-                  mode="multiple"
-                  placeholder="Géographic Location"
-                  style={{ width: 200 }}
-                  options={[
-                    //MAP
-
-                    {
-                      value: "jack",
-                      label: "Jack (100)",
-                    },
-                    {
-                      value: "lucy",
-                      label: "Lucy (101)",
-                    },
-                  ]}
-                /> */}
-
-                {/* Date Begin / Date End */}
                 <DatePicker.RangePicker
                   placeholder={["Begin Date", "End Date"]}
                   separator="-"
@@ -201,7 +154,6 @@ const Advanced = () => {
               </div>
             </div>
           </div>
-
           <Arts />
         </>
       )}

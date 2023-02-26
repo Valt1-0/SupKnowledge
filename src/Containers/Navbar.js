@@ -41,10 +41,7 @@ const Navbar = () => {
   };
 
   const test = async (search) => {
-    console.log("test1 : " + state);
     setKeywordDebounced(search.target.value);
-
-    console.log("test1 : " + search.target.value);
   };
 
   return (
