@@ -108,6 +108,7 @@ const DatasContextProvider = (props) => {
         isLoadingDatas,
         setKeywords,
         setFilter,
+        filter,
         keywords,
       }}
     >
