@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate }  from "react-router-
 import Navbar from "./Navbar";
 import Footer from "../Components/Footer";
 import Error404 from "../Pages/404";
-import Home from "../Pages/Home2";
+import Home from "../Pages/Home";
 import DatasContextProvider from "../Contexts/DatasContext";
 import InfoObject from "../Pages/InfoObject";
 import Advanced from "../Pages/Advanced"
