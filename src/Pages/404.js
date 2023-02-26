@@ -16,7 +16,7 @@ const Error404 = () => {
 
   return (
     <>
-      <div className="grid place-items-center mt-10">
+      <div data-testid='404' className="grid place-items-center mt-10">
         <motion.img
           initial={{ height: "16rem", opacity: 0 }}
           // style={{ height: imageLoading ? "6rem" : "auto" }}

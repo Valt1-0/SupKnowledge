@@ -92,10 +92,10 @@ const InfoObject = (req, res) => {
   return (
     <>
       {isLoading ? (
-        <p>Loading</p>
+        <p data-testid="Loading">Loading</p>
       ) : state.SingleToRender.message == undefined ? (
         <>
-          <div className="flex flex-col lg:flex-row mx-10 my-20 justify-between items-start lg:items-center text-sm">
+            <div data-testid="InfoObject" className="flex flex-col lg:flex-row mx-10 my-20 justify-between items-start lg:items-center text-sm">
             <div className="w-[300px] m-auto">
               <img
                 src={
@@ -180,6 +180,7 @@ const InfoObject = (req, res) => {
                   rel="noreferrer"
                 >
                   <motion.button
+                    data-testid="btn-Learn-more"
                     className="bg-slate-200 rounded hover:bg-slate-400 text-black hover:text-white font-bold py-2 px-4"
                     target="_blank"
                     whileHover={{ scale: 1.1 }}
@@ -198,7 +199,9 @@ const InfoObject = (req, res) => {
           </button> */}
         </>
       ) : (
-        <> {navigate("/404")}</>
+        <> 
+         {navigate("/404")}
+         </>
       )}
     </>
   );

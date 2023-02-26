@@ -35,6 +35,7 @@ function reducer(state, action) {
             };
         case 'SET_ARTS':
             sessionStorage.setItem("artsToRender", JSON.stringify(action.payload.artsToRender));
+            console.log("length : ", JSON.parse(window.sessionStorage.getItem("artsToRender")).length )
             console.log(" SET_ARTS artsToRender : ", action.payload.artsToRender, " allObjects : ", state.allObjects)
             return {
                 ...state,
@@ -264,7 +265,7 @@ const Arts = () => {
                 <>
                         <ScrollArrow />
                     <div
-                        id="Cards-elements"
+                            id="Cards-elements" data-testid="Cards-elements" 
                         className="flex justify-center flex-wrap items-center "
                     >
                         {state2.artsToRender?.map((art, index) => (
@@ -274,7 +275,7 @@ const Arts = () => {
 
                     <>
                         {hasMore && loading ? (
-                            <div className="relative flex ">
+                                <div data-testid="loadMore" className="relative flex">
                                 <div className="absolute  bottom-0 w-full flex justify-center items-center">
                                     <div className="border-t-transparent border-solid animate-spin  rounded-full border-slate-400 border-8 h-10 w-10"></div>
                                 </div>
